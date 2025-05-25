@@ -690,7 +690,6 @@
         </div>
     </div>
 
-    <script src="env.js"></script>
     <script type="module">
         import { auth, handleLogout } from './auth.js';
         import OpenAI from 'https://cdn.skypack.dev/openai';
@@ -745,7 +744,7 @@
                 
                 // Set headers
                 xhr.setRequestHeader('Content-Type', 'application/json');
-                xhr.setRequestHeader('Authorization', 'Bearer ' + window._env_.OPENROUTER_API_KEY);
+                xhr.setRequestHeader('Authorization', 'Bearer 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');
                 xhr.setRequestHeader('HTTP-Referer', window.location.origin);
                 xhr.setRequestHeader('X-Title', 'Simplexify Learning Assistant');
                 
