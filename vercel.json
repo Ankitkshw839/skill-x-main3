@@ -1,0 +1,7 @@
+{
+  "name": "skill-x-main3",
+  "scope": "Ankitkshw839",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
+  ]
+}
