@@ -1,4 +1,5 @@
 import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-database.js";
+import OpenAI from 'https://cdn.skypack.dev/openai';
 
 // Define image categories for different course types
 const courseImageCategories = {
@@ -185,18 +186,25 @@ async function callOpenRouterAPI(userData) {
     console.log("Calling OpenRouter API with data:", userData);
     
     try {
+        if (!window._env_ || !window._env_.OPENROUTER_API_KEY) {
+            console.error("OpenRouter API key is not configured. Please ensure env.js is loaded.");
+            return;
+        }
+
         console.log("Making API request to OpenRouter with model: mistralai/devstral-small:free");
         
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-                'Authorization': 'Bearer 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',
-            'HTTP-Referer': window.location.origin,
-            'X-Title': 'Simplexify Learning Platform'
-        },
-        body: JSON.stringify({
-                model: "mistralai/devstral-small:free",
+        const openai = new OpenAI({
+            baseURL: "https://openrouter.ai/api/v1",
+            apiKey: window._env_.OPENROUTER_API_KEY,
+            dangerouslyAllowBrowser: true,
+            defaultHeaders: {
+                "HTTP-Referer": window.location.origin,
+                "X-Title": "Simplexify Learning Platform",
+            },
+        });
+
+        const completion = await openai.chat.completions.create({
+            model: "mistralai/devstral-small:free",
             messages: [
                 {
                     role: "system",
@@ -231,19 +239,32 @@ async function callOpenRouterAPI(userData) {
                     6. Difficulty matches user's level (${userData.experienceLevel})
                     7. All courses relate to ${userData.mainInterest}`
                 }
-            ]
-        })
-    });
+            ],
+        });
 
-    if (!response.ok) {
-            const errorText = await response.text();
-            console.error(`API call failed: ${response.status} ${response.statusText}`, errorText);
-        throw new Error(`API call failed: ${response.status} ${response.statusText}`);
-    }
-
-    const data = await response.json();
-        console.log("API Response received:", data);
-    return data;
+        console.log("API Response received:", completion);
+        const responseContent = completion.choices[0].message.content;
+        let parsedData;
+        
+        try {
+            parsedData = JSON.parse(responseContent);
+        } catch (parseError) {
+            console.error("Error parsing JSON response:", parseError);
+            // Extract JSON from the response if it's embedded in text
+            const jsonMatch = responseContent.match(/\{[\s\S]*\}/);
+            if (jsonMatch) {
+                try {
+                    parsedData = JSON.parse(jsonMatch[0]);
+                } catch (fallbackError) {
+                    console.error("Failed to extract JSON from response:", fallbackError);
+                    throw new Error("Invalid response format from API");
+                }
+            } else {
+                throw new Error("Could not extract JSON from API response");
+            }
+        }
+        
+        return parsedData;
     } catch (error) {
         console.error("Error in OpenRouter API call:", error);
         throw error;
@@ -259,22 +280,23 @@ export async function generateCourseRecommendations(userData) {
         // Extract and validate the courses from the response
         let courses;
         try {
-            const content = apiResponse.choices[0].message.content;
-            
-            // Sometimes the API might return content with markdown code blocks, let's handle that
-            let jsonContent = content;
-            if (content.includes("```json")) {
-                jsonContent = content.split("```json")[1].split("```")[0].trim();
-            } else if (content.includes("```")) {
-                jsonContent = content.split("```")[1].split("```")[0].trim();
+            // Check if the response is already parsed (from the new OpenRouter client)
+            if (apiResponse && apiResponse.courses && Array.isArray(apiResponse.courses)) {
+                courses = apiResponse.courses;
+            } else {
+                // Try to handle the response as it might come in different formats
+                console.log("Response format is different than expected, attempting to extract courses");
+                
+                // If the data is still in the original format
+                if (apiResponse && apiResponse.courses) {
+                    courses = apiResponse.courses;
+                } else {
+                    throw new Error("Unexpected API response format");
+                }
             }
             
-            // Try to parse the JSON
-            const parsed = JSON.parse(jsonContent);
-            courses = parsed.courses || [];
-            
             if (!Array.isArray(courses) || courses.length === 0) {
-                console.error("No valid courses in API response:", parsed);
+                console.error("No valid courses in API response:", apiResponse);
                 
                 // Fall back to template courses if available
                 if (userData.mainInterest && userData.experienceLevel && 
@@ -290,7 +312,7 @@ export async function generateCourseRecommendations(userData) {
                 }
             }
         } catch (error) {
-            console.error("Error parsing API response:", error, "Response:", apiResponse);
+            console.error("Error extracting courses from API response:", error, "Response:", apiResponse);
             
             // Fall back to template courses
             if (userData.mainInterest && userData.experienceLevel && 
@@ -388,4 +410,4 @@ export async function saveCourseRecommendations(userId, courses) {
     // This function now just returns success without saving to database
     console.log("Not saving recommended courses to database as requested.");
         return true;
-} 
+}

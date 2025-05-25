@@ -401,7 +401,7 @@
                 <label for="password">Password</label>
                 <div class="input-group">
                     <span class="input-icon"><i class="fas fa-lock"></i></span>
-                    <input type="password" id="password" name="password" class="form-input" placeholder="Password" required>
+                    <input type="password" id="password" name="password" class="form-input" placeholder="••••••••" required autocomplete="current-password">
                 </div>
                 <div class="error-message" id="password-error"></div>
                 <a href="#" class="forgot-password">Forgot password?</a>
@@ -430,6 +430,7 @@
         </div>
     </div>
 
+    <script src="env.js"></script>
     <script>
         function redirectToWelcome() {
             window.location.href = 'welcome2.html';
@@ -438,11 +439,12 @@
 
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
-      import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
+      import { getAuth, signInWithEmailAndPassword, signInWithPopup, signInWithRedirect, GoogleAuthProvider, FacebookAuthProvider } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
       import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-analytics.js";
 
+      // Firebase config is loaded from environment variables for security
       const firebaseConfig = {
-        apiKey: "AIzaSyCGV8-zgiG0z04OTU-bK7fbOWPLT4X6TFY",
+        apiKey: window._env_.FIREBASE_API_KEY,
         authDomain: "simplexify.firebaseapp.com",
         projectId: "simplexify",
         storageBucket: "simplexify.firebasestorage.app",
@@ -493,30 +495,47 @@
       // Google login
       const googleBtn = document.querySelector('.social-btn.google');
       if (googleBtn) {
-        googleBtn.addEventListener('click', async () => {
+        googleBtn.addEventListener('click', async (e) => {
+          e.preventDefault();
           const provider = new GoogleAuthProvider();
           provider.setCustomParameters({
             prompt: 'select_account'
           });
+          
           try {
-            const result = await signInWithPopup(auth, provider);
-            // Show success animation
-            const successOverlay = document.getElementById('successOverlay');
-            successOverlay.classList.add('show');
-            
-            // Wait for animation to complete before redirecting
-            setTimeout(() => {
-            window.location.href = 'welcome2.html';
-            }, 1200);
+            // First try signInWithPopup
+            try {
+              const result = await signInWithPopup(auth, provider);
+              handleSuccessfulLogin();
+            } catch (popupError) {
+              if (popupError.code === 'auth/popup-blocked') {
+                // If popup is blocked, try redirect method instead
+                await signInWithRedirect(auth, provider);
+              } else {
+                throw popupError;
+              }
+            }
           } catch (error) {
             if (error.code === 'auth/popup-closed-by-user') {
               // User closed the popup, no need to show error
               return;
             }
             console.error('Google login error:', error);
-            alert('Google login failed: ' + error.message);
+            const errorMessage = error.code === 'auth/popup-blocked' 
+              ? 'Please allow popups for this site to use Google login' 
+              : error.message;
+            alert('Google login failed: ' + errorMessage);
           }
         });
+      }
+
+      // Handle successful login
+      function handleSuccessfulLogin() {
+        const successOverlay = document.getElementById('successOverlay');
+        successOverlay.classList.add('show');
+        setTimeout(() => {
+          window.location.href = 'welcome2.html';
+        }, 1200);
       }
 
       // Facebook login
