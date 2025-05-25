@@ -191,7 +191,7 @@ async function callOpenRouterAPI(userData) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-                'Authorization': 'Bearer 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',
+                'Authorization': 'Bearer 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',
             'HTTP-Referer': window.location.origin,
             'X-Title': 'Simplexify Learning Platform'
         },
