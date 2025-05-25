@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Courses | Simplexify</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .page-header {
+            margin-top: 80px;
+            padding: 4rem 5%;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                url('https://img.freepik.com/free-photo/business-people-working-together-on-project-and-brainstorming-in-workshop-at-office_155003-18158.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            font-size: 1.25rem;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        .category-page {
+            padding: 3rem 5%;
+            background-color: var(--gray-100);
+        }
+
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .search-bar {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 0.6rem 1rem 0.6rem 3rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius);
+            background: white;
+        }
+
+        .search-bar i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-500);
+        }
+
+        .filter-dropdown {
+            padding: 0.6rem 1.2rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius);
+            background: white;
+            min-width: 150px;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--gray-200);
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .course-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .course-card:hover img {
+            transform: scale(1.05);
+        }
+
+        .course-content {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .course-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 0.75rem;
+        }
+
+        .course-card p {
+            color: var(--gray-600);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .course-meta {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-top: auto;
+            margin-bottom: 1.5rem;
+            color: var(--gray-600);
+            font-size: 0.875rem;
+        }
+
+        .course-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .enroll-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            padding: 0.85rem;
+            border: none;
+            border-radius: var(--radius);
+            background: var(--primary-color);
+            color: white;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .enroll-btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            margin-top: 2rem;
+            background: var(--gray-200);
+            color: var(--gray-700);
+            border-radius: var(--radius);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .back-btn:hover {
+            background: var(--gray-300);
+            transform: translateY(-2px);
+        }
+
+        .section-title {
+            margin-bottom: 0.5rem;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gray-800);
+        }
+
+        .section-subtitle {
+            color: var(--gray-600);
+            margin-bottom: 2.5rem;
+            max-width: 700px;
+        }
+
+        .category-label {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: var(--gray-100);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: var(--gray-700);
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2.25rem;
+            }
+            
+            .page-header p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="welcome2.html" class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            Simplexify
+        </a>
+        <nav>
+            <a href="welcome2.html"><i class="fas fa-home"></i> Home</a>
+            <a href="mycourses.html"><i class="fas fa-book-open"></i> My Courses</a>
+            <a href="dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a>
+            <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+        </nav>
+    </header>
+
+    <div class="page-header">
+        <h1>Business Courses</h1>
+        <p>Master essential business skills for career growth and entrepreneurial success</p>
+    </div>
+
+    <div class="category-page">
+        <div class="filter-bar">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search business courses...">
+            </div>
+            <select class="filter-dropdown">
+                <option>All Levels</option>
+                <option>Beginner</option>
+                <option>Intermediate</option>
+                <option>Advanced</option>
+            </select>
+            <select class="filter-dropdown">
+                <option>All Categories</option>
+                <option>Marketing</option>
+                <option>Finance</option>
+                <option>Management</option>
+                <option>Entrepreneurship</option>
+            </select>
+        </div>
+
+        <h2 class="section-title">Most Popular Courses</h2>
+        <p class="section-subtitle">Learn from industry experts and boost your business career</p>
+
+        <div class="courses-grid">
+            <div class="course-card animate-fade-in">
+                <img src="https://img.freepik.com/free-vector/digital-marketing-team-with-laptops-light-bulb-marketing-team-metrics-marketing-team-lead-responsibilities-concept_335657-258.jpg" alt="Digital Marketing">
+                <div class="course-content">
+                    <span class="category-label">Marketing</span>
+                    <h3>Digital Marketing Masterclass</h3>
+                    <p>Learn comprehensive online marketing strategies including SEO, social media, email marketing, and PPC campaigns.</p>
+                    <div class="course-meta">
+                        <div class="course-meta-item">
+                            <i class="fas fa-clock"></i> 32 hours
+                        </div>
+                        <div class="course-meta-item">
+                            <i class="fas fa-signal"></i> Intermediate
+                        </div>
+                    </div>
+                    <a href="https://www.youtube.com/watch?v=6pY7EjqD3QA" target="_blank" class="enroll-btn">
+                        <i class="fas fa-play-circle"></i> Watch Now
+                    </a>
+                </div>
+            </div>
+            <div class="course-card animate-fade-in">
+                <img src="https://img.freepik.com/free-vector/financial-safety-concept-illustration_114360-7364.jpg" alt="Finance">
+                <div class="course-content">
+                    <span class="category-label">Finance</span>
+                    <h3>Financial Analysis & Modeling</h3>
+                    <p>Master financial decision-making through advanced Excel modeling, financial statement analysis, and valuation methods.</p>
+                    <div class="course-meta">
+                        <div class="course-meta-item">
+                            <i class="fas fa-clock"></i> 28 hours
+                        </div>
+                        <div class="course-meta-item">
+                            <i class="fas fa-signal"></i> Advanced
+                        </div>
+                    </div>
+                    <a href="https://www.youtube.com/watch?v=F9PJoHnYGX4" target="_blank" class="enroll-btn">
+                        <i class="fas fa-play-circle"></i> Watch Now
+                    </a>
+                </div>
+            </div>
+            <div class="course-card animate-fade-in">
+                <img src="https://img.freepik.com/free-vector/startup-life-concept-illustration_114360-1068.jpg" alt="Entrepreneurship">
+                <div class="course-content">
+                    <span class="category-label">Entrepreneurship</span>
+                    <h3>Startup Fundamentals</h3>
+                    <p>Learn how to validate ideas, build MVPs, acquire customers, and secure funding for your startup venture.</p>
+                    <div class="course-meta">
+                        <div class="course-meta-item">
+                            <i class="fas fa-clock"></i> 24 hours
+                        </div>
+                        <div class="course-meta-item">
+                            <i class="fas fa-signal"></i> Beginner
+                        </div>
+                    </div>
+                    <a href="https://www.youtube.com/watch?v=bCb12Jw-eLg" target="_blank" class="enroll-btn">
+                        <i class="fas fa-play-circle"></i> Watch Now
+                    </a>
+                </div>
+            </div>
+            <div class="course-card animate-fade-in">
+                <img src="https://img.freepik.com/free-vector/project-management-business-multitasking-concept-illustration_23-2148393880.jpg" alt="Project Management">
+                <div class="course-content">
+                    <span class="category-label">Management</span>
+                    <h3>Project Management Professional</h3>
+                    <p>Develop the skills to lead successful projects using agile and traditional methodologies with real-world case studies.</p>
+                    <div class="course-meta">
+                        <div class="course-meta-item">
+                            <i class="fas fa-clock"></i> 36 hours
+                        </div>
+                        <div class="course-meta-item">
+                            <i class="fas fa-signal"></i> Intermediate
+                        </div>
+                    </div>
+                    <a href="https://www.youtube.com/watch?v=HAnw168huqA" target="_blank" class="enroll-btn">
+                        <i class="fas fa-play-circle"></i> Watch Now
+                    </a>
+                </div>
+            </div>
+            <div class="course-card animate-fade-in">
+                <img src="https://img.freepik.com/free-vector/business-team-discussing-ideas-startup_74855-4380.jpg" alt="Sales">
+                <div class="course-content">
+                    <span class="category-label">Sales</span>
+                    <h3>Sales Mastery: B2B Strategies</h3>
+                    <p>Learn advanced B2B sales strategies, pipeline management, negotiation tactics, and relationship-building techniques.</p>
+                    <div class="course-meta">
+                        <div class="course-meta-item">
+                            <i class="fas fa-clock"></i> 22 hours
+                        </div>
+                        <div class="course-meta-item">
+                            <i class="fas fa-signal"></i> Advanced
+                        </div>
+                    </div>
+                    <a href="https://www.youtube.com/watch?v=YzFRo8TYOAw" target="_blank" class="enroll-btn">
+                        <i class="fas fa-play-circle"></i> Watch Now
+                    </a>
+                </div>
+            </div>
+            <div class="course-card animate-fade-in">
+                <img src="https://img.freepik.com/free-vector/leadership-concept-illustration_114360-7467.jpg" alt="Leadership">
+                <div class="course-content">
+                    <span class="category-label">Leadership</span>
+                    <h3>Leadership Development</h3>
+                    <p>Develop essential leadership skills for managing teams, driving change, and creating a positive organizational culture.</p>
+                    <div class="course-meta">
+                        <div class="course-meta-item">
+                            <i class="fas fa-clock"></i> 26 hours
+                        </div>
+                        <div class="course-meta-item">
+                            <i class="fas fa-signal"></i> Intermediate
+                        </div>
+                    </div>
+                    <a href="https://www.youtube.com/watch?v=kJSHM0GSc6Y" target="_blank" class="enroll-btn">
+                        <i class="fas fa-play-circle"></i> Watch Now
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title" style="margin-top: 3rem;">Specialized Programs</h2>
+        <p class="section-subtitle">Deep dive into specific business domains with comprehensive courses</p>
+
+        <div class="courses-grid">
+            <div class="course-card animate-fade-in">
+                <img src="https://img.freepik.com/free-vector/stock-market-concept-illustration_114360-7111.jpg" alt="Stock Trading">
+                <div class="course-content">
+                    <span class="category-label">Finance</span>
+                    <h3>Stock Market Investment</h3>
+                    <p>Master fundamental and technical analysis techniques to make informed investment decisions in the stock market.</p>
+                    <div class="course-meta">
+                        <div class="course-meta-item">
+                            <i class="fas fa-clock"></i> 30 hours
+                        </div>
+                        <div class="course-meta-item">
+                            <i class="fas fa-signal"></i> Intermediate
+                        </div>
+                    </div>
+                    <a href="https://www.youtube.com/watch?v=DwY3qeOpH7U" target="_blank" class="enroll-btn">
+                        <i class="fas fa-play-circle"></i> Watch Now
+                    </a>
+                </div>
+            </div>
+            <div class="course-card animate-fade-in">
+                <img src="https://img.freepik.com/free-vector/accounting-concept-illustration_114360-7391.jpg" alt="Accounting">
+                <div class="course-content">
+                    <span class="category-label">Finance</span>
+                    <h3>Financial Accounting</h3>
+                    <p>Learn the fundamentals of financial statements, bookkeeping principles, and accounting standards for business.</p>
+                    <div class="course-meta">
+                        <div class="course-meta-item">
+                            <i class="fas fa-clock"></i> 24 hours
+                        </div>
+                        <div class="course-meta-item">
+                            <i class="fas fa-signal"></i> Beginner
+                        </div>
+                    </div>
+                    <a href="https://www.youtube.com/watch?v=NblHxXxc1iE" target="_blank" class="enroll-btn">
+                        <i class="fas fa-play-circle"></i> Watch Now
+                    </a>
+                </div>
+            </div>
+            <div class="course-card animate-fade-in">
+                <img src="https://img.freepik.com/free-vector/business-negotiation-illustration-concept_114360-7487.jpg" alt="Negotiation">
+                <div class="course-content">
+                    <span class="category-label">Skills</span>
+                    <h3>Negotiation Strategies</h3>
+                    <p>Develop powerful negotiation tactics and strategies for business deals, conflict resolution, and professional growth.</p>
+                    <div class="course-meta">
+                        <div class="course-meta-item">
+                            <i class="fas fa-clock"></i> 18 hours
+                        </div>
+                        <div class="course-meta-item">
+                            <i class="fas fa-signal"></i> All Levels
+                        </div>
+                    </div>
+                    <a href="https://www.youtube.com/watch?v=MtL6M8BcXhw" target="_blank" class="enroll-btn">
+                        <i class="fas fa-play-circle"></i> Watch Now
+                    </a>
+                </div>
+            </div>
+            <div class="course-card animate-fade-in">
+                <img src="https://img.freepik.com/free-vector/ecommerce-campaign-concept-illustration_114360-8432.jpg" alt="E-commerce">
+                <div class="course-content">
+                    <span class="category-label">Entrepreneurship</span>
+                    <h3>E-commerce Business</h3>
+                    <p>Build a profitable online store from scratch with strategies for product selection, marketing, and customer retention.</p>
+                    <div class="course-meta">
+                        <div class="course-meta-item">
+                            <i class="fas fa-clock"></i> 28 hours
+                        </div>
+                        <div class="course-meta-item">
+                            <i class="fas fa-signal"></i> Beginner
+                        </div>
+                    </div>
+                    <a href="https://www.youtube.com/watch?v=lzAh6MUtiy0" target="_blank" class="enroll-btn">
+                        <i class="fas fa-play-circle"></i> Watch Now
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <a href="welcome2.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Back to Categories
+        </a>
+    </div>
+
+    <script>
+        // Add this script to enhance UI interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add active class to current page in navigation
+            const currentLocation = window.location.pathname;
+            const navLinks = document.querySelectorAll('nav a');
+            
+            navLinks.forEach(link => {
+                if(link.getAttribute('href') === currentLocation.split('/').pop()) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

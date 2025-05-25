@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simplexify - Transform Your Future</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem 5%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 2.5rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 6rem 2rem;
+            position: relative;
+            overflow: hidden;
+            background-color: #030014;
+        }
+
+        #particleCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 150%;
+            object-fit: cover;
+            z-index: 0;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom,
+                rgba(3, 0, 20, 0.5) 0%,
+                rgba(3, 0, 20, 0.3) 50%,
+                rgba(3, 0, 20, 0.8) 90%,
+                #030014 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            z-index: 2;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 7rem;
+            font-weight: 50;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s ease forwards;
+        }
+
+        .hero p {
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: #ffffff82;
+            margin-bottom: 2.5rem;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s ease forwards 0.3s;
+        }
+
+        .section {
+            padding: 2.5rem 5%;
+            position: relative;
+            overflow: hidden;
+            background: #030014;
+        }
+
+        .section:first-of-type {
+            margin-top: -2px;
+            padding-top: 3rem;
+            background: linear-gradient(to bottom,
+                #030014,
+                rgba(3, 0, 20, 0.95));
+        }
+
+        .section-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .section-content.image-left {
+            direction: rtl; /* This makes the grid items swap positions */
+        }
+
+        .section-content.image-left > * {
+            direction: ltr; /* Reset direction for the content inside */
+        }
+
+        .section-text {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .section-text.active {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 1s ease;
+        }
+
+        .section-image {
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .section-image.active {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 1.2s ease;
+        }
+
+        .section h2 {
+            font-size: 3.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section p {
+            font-size: 1.4rem;
+            color: #888;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.5),
+                       0 0 20px rgba(255, 255, 255, 0.1);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 30px;
+            background: linear-gradient(45deg, 
+                rgba(255, 255, 255, 0.1), 
+                rgba(255, 255, 255, 0.05));
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .section-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 4rem;
+            }
+            .hero p {
+                font-size: 1.4rem;
+            }
+            .section-content, 
+            .section-content.image-left {
+                grid-template-columns: 1fr;
+                direction: ltr;
+            text-align: center;
+            }
+            .section h2 {
+                font-size: 2.5rem;
+            }
+            .section p {
+                font-size: 1.2rem;
+            }
+        }
+
+        @keyframes gradientFlow {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes floatSparkle {
+            0%, 100% { 
+                transform: translate(0, 0) scale(0);
+                opacity: 0;
+            }
+            50% { 
+                transform: translate(var(--tx), var(--ty)) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .highlight {
+            background: linear-gradient(
+                270deg,
+                #4c35de,
+                #e64aa9,
+                #ff6b6b,
+                #4834d4,
+                #686de0,
+                #be2edd
+            );
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientFlow 8s ease infinite;
+            position: relative;
+            display: inline-block;
+        }
+
+        .highlight::before,
+        .highlight::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: white;
+            box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.3);
+            animation: sparkle 2s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        .highlight::before {
+            top: 20%;
+            left: 20%;
+            animation-delay: 0.3s;
+        }
+
+        .highlight::after {
+            top: 60%;
+            right: 20%;
+            animation-delay: 1s;
+        }
+
+        .sparkle-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background-color: white;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        /* More sparkles for text */
+        .sparkle:nth-child(1) { animation: sparkle 2s ease-in-out infinite; top: 10%; left: 10%; }
+        .sparkle:nth-child(2) { animation: sparkle 2s ease-in-out infinite 0.3s; top: 30%; right: 10%; }
+        .sparkle:nth-child(3) { animation: sparkle 2s ease-in-out infinite 0.6s; bottom: 20%; left: 20%; }
+        .sparkle:nth-child(4) { animation: sparkle 2s ease-in-out infinite 0.9s; bottom: 30%; right: 20%; }
+        .sparkle:nth-child(5) { animation: sparkle 2s ease-in-out infinite 1.2s; top: 50%; left: 15%; }
+        .sparkle:nth-child(6) { animation: sparkle 2s ease-in-out infinite 1.5s; bottom: 40%; right: 25%; }
+        .sparkle:nth-child(7) { animation: sparkle 2s ease-in-out infinite 1.8s; top: 15%; right: 30%; }
+        .sparkle:nth-child(8) { animation: sparkle 2s ease-in-out infinite 2.1s; bottom: 15%; left: 30%; }
+
+        /* Image sparkle effect */
+        .section-image {
+            position: relative;
+            overflow: visible !important;
+        }
+
+        .image-sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.3);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .section-image .image-sparkle:nth-child(1) { --tx: 20px; --ty: -20px; animation: floatSparkle 3s ease-in-out infinite; top: 20%; left: 20%; }
+        .section-image .image-sparkle:nth-child(2) { --tx: -15px; --ty: 25px; animation: floatSparkle 3s ease-in-out infinite 0.5s; top: 40%; right: 25%; }
+        .section-image .image-sparkle:nth-child(3) { --tx: 25px; --ty: 20px; animation: floatSparkle 3s ease-in-out infinite 1s; bottom: 30%; left: 30%; }
+        .section-image .image-sparkle:nth-child(4) { --tx: -20px; --ty: -15px; animation: floatSparkle 3s ease-in-out infinite 1.5s; bottom: 40%; right: 20%; }
+        .section-image .image-sparkle:nth-child(5) { --tx: 15px; --ty: -25px; animation: floatSparkle 3s ease-in-out infinite 2s; top: 30%; left: 40%; }
+        .section-image .image-sparkle:nth-child(6) { --tx: -25px; --ty: 15px; animation: floatSparkle 3s ease-in-out infinite 2.5s; top: 60%; right: 35%; }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, 
+                rgba(3, 0, 20, 0.98),
+                rgba(3, 0, 20, 0.95));
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(120deg, #4c35de, #e64aa9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .stat-item h3 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(120deg, #4c35de, #e64aa9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .stat-item p {
+            font-size: 1.2rem;
+            color: #888;
+        }
+
+        @media (max-width: 768px) {
+            .stats-section {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideInLeft {
+            from { transform: translateX(-100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .pulse-animation {
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        .testimonial-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 1rem;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .achievement-box {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .achievement-box:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .achievement-number {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(120deg, #4c35de, #e64aa9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        /* Add new animated cards styles */
+        .animated-cards {
+            display: flex;
+            overflow-x: auto;
+            gap: 1.5rem;
+            margin: 2rem 0;
+            padding: 1rem 0;
+            scroll-snap-type: x mandatory;
+            -ms-overflow-style: none;  /* Hide scrollbar IE and Edge */
+            scrollbar-width: none;  /* Hide scrollbar Firefox */
+        }
+
+        .animated-cards::-webkit-scrollbar {
+            display: none; /* Hide scrollbar Chrome, Safari, Opera */
+        }
+
+        .animated-card {
+            min-width: 300px;
+            scroll-snap-align: start;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+                cursor: pointer;
+            }
+
+        .animated-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                rgba(76, 53, 222, 0.1),
+                rgba(230, 74, 169, 0.1));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .animated-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .animated-card:hover::before {
+            opacity: 1;
+        }
+
+        .animated-card .card-icon {
+                font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #4c35de;
+            transition: transform 0.4s ease;
+        }
+
+        .animated-card:hover .card-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .animated-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.8rem;
+            color: #fff;
+        }
+
+        .animated-card p {
+            font-size: 1rem;
+            color: #888;
+            line-height: 1.5;
+        }
+
+        .animated-card .card-stats {
+            display: flex;
+            align-items: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .animated-card .card-stats i {
+            margin-right: 0.5rem;
+        }
+
+        .card-shine {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                45deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.1) 50%,
+                transparent 100%
+            );
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .animated-card:hover .card-shine {
+            transform: translateX(100%);
+        }
+
+        @keyframes cardPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        .animated-card.pulse {
+            animation: cardPulse 2s infinite;
+        }
+
+        @keyframes slideInBottom {
+            from {
+                transform: translateY(100px); 
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1; 
+            }
+        }
+
+        @keyframes slideInTop {
+            from { 
+                transform: translateY(-100px); 
+            opacity: 0;
+            }
+            to { 
+                transform: translateY(0); 
+                opacity: 1; 
+            }
+        }
+
+        @keyframes fireIn {
+            0% {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeScale {
+            0% {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .section-text.active[data-animation="fire"] {
+            animation: fireIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .section-text.active[data-animation="fade"] {
+            animation: fadeScale 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .section-text.active[data-animation="slideTop"] {
+            animation: slideInTop 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        .section-text.active[data-animation="slideBottom"] {
+            animation: slideInBottom 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        /* Particle styles */
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .pricing-card {
+            transform: translateY(0);
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .pricing-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .pricing-card {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="#" class="logo">Simplexify</a>
+        <div class="nav-links">
+            <a href="features.html">Features</a>
+            <a href="courses.html">Courses</a>
+            <a href="pricing.html">Pricing</a>
+            <a href="login.html">LogIn</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <canvas id="particleCanvas"></canvas>
+        <video class="hero-video" autoplay loop muted playsinline>
+            <source src="/assets/videos/blackhole.webm" type="video/webm">
+            <!-- Fallback message -->
+            Your browser does not support the video tag.
+        </video>
+        <div class="hero-content">
+            <h1>Learning <span class="highlight">
+                Reimagined
+                <div class="sparkle"></div>
+                <div class="sparkle"></div>
+                <div class="sparkle"></div>
+                <div class="sparkle"></div>
+                <div class="sparkle"></div>
+                <div class="sparkle"></div>
+                <div class="sparkle"></div>
+                <div class="sparkle"></div>
+            </span></h1>
+            <p>Transform your future with <span class="highlight">expert-led</span> courses</p>
+            <a href="signup.html" class="cta-button">Start Learning Today</a>
+                </div>
+    </section>
+
+    <section class="section gradient-bg">
+        <div class="section-content">
+            <div class="section-text">
+                <h2>Learn <span class="highlight">Anywhere</span></h2>
+                <p>Access <span class="highlight">world-class</span> education from the comfort of your home. Our platform adapts to your schedule, making learning flexible and accessible.</p>
+                <div class="stats-section">
+                    <div class="stat-item">
+                        <h3>500+</h3>
+                        <p>Expert Courses</p>
+            </div>
+                    <div class="stat-item">
+                        <h3>50K+</h3>
+                        <p>Active Learners</p>
+            </div>
+                    <div class="stat-item">
+                        <h3>95%</h3>
+                        <p>Success Rate</p>
+        </div>
+    </div>
+            </div>
+            <div class="section-image">
+                <div class="image-sparkle"></div>
+                <div class="image-sparkle"></div>
+                <div class="image-sparkle"></div>
+                <div class="image-sparkle"></div>
+                <div class="image-sparkle"></div>
+                <div class="image-sparkle"></div>
+                <img src="assets/images/vecteezy_3d-male-character-sitting-on-a-sofa-and-working-on-a-laptop_24387852.png" 
+                     alt="Learn from anywhere">
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="section-content image-left">
+            <div class="section-image">
+                <div class="image-sparkle"></div>
+                <div class="image-sparkle"></div>
+                <div class="image-sparkle"></div>
+                <div class="image-sparkle"></div>
+                <div class="image-sparkle"></div>
+                <div class="image-sparkle"></div>
+                <img src="assets/images/girl.png" 
+                     alt="Expert guidance">
+    </div>
+            <div class="section-text">
+                <h2>Expert <span class="highlight">Guidance</span></h2>
+                <p>Connect with industry professionals and learn from their <span class="highlight">real-world</span> experience. Get personalized feedback and support throughout your journey.</p>
+        <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-video feature-icon"></i>
+                        <h3>Live Sessions</h3>
+                        <p>Interactive classes with real-time feedback</p>
+                </div>
+                    <div class="feature-card">
+                        <i class="fas fa-comments feature-icon"></i>
+                        <h3>1:1 Mentoring</h3>
+                        <p>Personal guidance from industry experts</p>
+            </div>
+                    <div class="feature-card">
+                        <i class="fas fa-users feature-icon"></i>
+                        <h3>Community</h3>
+                        <p>Learn and grow with peers</p>
+                </div>
+            </div>
+                </div>
+            </div>
+    </section>
+
+    <section class="section gradient-bg">
+        <div class="section-content">
+            <div class="section-text">
+                <h2>Future-Ready <span class="highlight">Skills</span></h2>
+                <p>Master the most in-demand skills with our <span class="highlight">cutting-edge</span> curriculum and hands-on projects.</p>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-code feature-icon"></i>
+                        <h3>Coding</h3>
+                        <p>Web, Mobile & Software Development</p>
+                </div>
+                    <div class="feature-card">
+                        <i class="fas fa-robot feature-icon"></i>
+                        <h3>AI & ML</h3>
+                        <p>Artificial Intelligence & Machine Learning</p>
+            </div>
+                    <div class="feature-card">
+                        <i class="fas fa-chart-line feature-icon"></i>
+                        <h3>Data Science</h3>
+                        <p>Analytics & Business Intelligence</p>
+                </div>
+            </div>
+                <a href="#" class="cta-button" style="margin-top: 3rem;">View All Courses</a>
+            </div>
+            <div class="section-image">
+                <div class="image-sparkle"></div>
+                <div class="image-sparkle"></div>
+                <div class="image-sparkle"></div>
+                <div class="image-sparkle"></div>
+                <div class="image-sparkle"></div>
+                <div class="image-sparkle"></div>
+                <img src="assets/images/3d-illustration-people-working-marketing.png" 
+                     alt="Future skills"
+                     style="
+                        width: 120%;
+                        max-width: none;
+                        margin-left: -10%;
+                        transform: scale(1.1);
+                        transition: transform 0.3s ease;
+                     ">
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="section-content image-left">
+            <div class="section-image float-animation">
+                <div class="image-sparkle"></div>
+                <div class="image-sparkle"></div>
+                <div class="image-sparkle"></div>
+                <div class="image-sparkle"></div>
+                <div class="image-sparkle"></div>
+                <div class="image-sparkle"></div>
+                <img src="assets/images/girl2.png" 
+                     alt="Career success" 
+                     style="max-width: 90%; height: auto;">
+                </div>
+            <div class="section-text">
+                <h2>Transform Your <span class="highlight">Career</span></h2>
+                <p>Join millions of learners worldwide who have advanced their careers through our platform.</p>
+                <div class="achievement-box pulse-animation">
+                    <div class="achievement-number">1M+</div>
+                    <p>Career Transitions</p>
+            </div>
+                <div class="testimonial-grid">
+                    <div class="testimonial-card">
+                        <i class="fas fa-quote-left" style="color: rgba(255,255,255,0.1); font-size: 2rem; margin-bottom: 1rem;"></i>
+                        <p style="margin-bottom: 1rem;">"Simplexify helped me transition from a beginner to a professional developer in just 6 months!"</p>
+                        <div style="color: #888;">- Sarah Johnson, Software Developer</div>
+        </div>
+                    <div class="testimonial-card">
+                        <i class="fas fa-quote-left" style="color: rgba(255,255,255,0.1); font-size: 2rem; margin-bottom: 1rem;"></i>
+                        <p style="margin-bottom: 1rem;">"The structured learning path and expert guidance made all the difference in my journey."</p>
+                        <div style="color: #888;">- Michael Chen, Data Scientist</div>
+    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section gradient-bg">
+        <div class="section-content" style="text-align: center; grid-template-columns: 1fr;">
+            <div class="section-text" style="max-width: 800px; margin: 0 auto;">
+                <h2>Ready to <span class="highlight">Begin?</span></h2>
+                <p style="margin-bottom: 2.5rem;">Start your learning journey today and unlock your full potential</p>
+                <a href="signup.html" class="cta-button" style="
+                    font-size: 1.2rem;
+                    padding: 1.2rem 3rem;
+                    margin-top: 1rem;
+                    background: rgba(255, 255, 255, 0.1);
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    transition: all 0.3s ease;
+                ">Begin Your Journey</a>
+    </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="section-content">
+            <div class="section-text">
+                <h2>Popular <span class="highlight">Courses</span></h2>
+                <p>Discover our most sought-after courses and start your learning journey</p>
+                <div class="animated-cards">
+                    <div class="animated-card">
+                        <div class="card-shine"></div>
+                        <i class="fas fa-code card-icon"></i>
+                        <h3>Web Development</h3>
+                        <p>Master modern web development with React, Node.js, and more</p>
+                        <div class="card-stats">
+                            <i class="fas fa-users"></i> 12,000+ students
+                            <i class="fas fa-star" style="margin-left: 1rem;"></i> 4.9
+            </div>
+            </div>
+                    <div class="animated-card">
+                        <div class="card-shine"></div>
+                        <i class="fas fa-robot card-icon"></i>
+                        <h3>AI & Machine Learning</h3>
+                        <p>Build intelligent systems with Python and TensorFlow</p>
+                        <div class="card-stats">
+                            <i class="fas fa-users"></i> 8,500+ students
+                            <i class="fas fa-star" style="margin-left: 1rem;"></i> 4.8
+        </div>
+                    </div>
+                    <div class="animated-card">
+                        <div class="card-shine"></div>
+                        <i class="fas fa-palette card-icon"></i>
+                        <h3>UI/UX Design</h3>
+                        <p>Create beautiful user interfaces with Figma and Adobe XD</p>
+                        <div class="card-stats">
+                            <i class="fas fa-users"></i> 10,200+ students
+                            <i class="fas fa-star" style="margin-left: 1rem;"></i> 4.9
+                        </div>
+                    </div>
+            </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function revealOnScroll() {
+            const sections = document.querySelectorAll('.section-text, .section-image, .achievement-box, .testimonial-card');
+            let index = 0;
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (sectionTop < windowHeight * 0.85) {
+                    section.classList.add('active');
+                    
+                    // Updated animation sequence without bounce
+                    if (section.classList.contains('section-text')) {
+                        const animations = ['slideInLeft', 'fireIn', 'slideTop', 'slideBottom', 'fade'];
+                        const currentAnimation = animations[index % animations.length];
+                        
+                        if (currentAnimation === 'slideInLeft') {
+                            section.style.animation = 'slideInLeft 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards';
+                        } else {
+                            section.setAttribute('data-animation', currentAnimation.replace('In', ''));
+                        }
+                        index++;
+                    } else if (section.classList.contains('section-image')) {
+                        section.style.animation = 'slideInRight 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards';
+                    }
+                    }
+                });
+            }
+            
+        // Add horizontal scroll with mouse wheel for cards
+        document.querySelectorAll('.animated-cards').forEach(container => {
+            container.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                container.scrollLeft += e.deltaY;
+            });
+        });
+
+        window.addEventListener('scroll', revealOnScroll);
+        window.addEventListener('load', revealOnScroll);
+
+        // Particle animation
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Set canvas size
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Particle class
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                // Start particles from the edges
+                const side = Math.floor(Math.random() * 4);
+                switch(side) {
+                    case 0: // top
+                        this.x = Math.random() * canvas.width;
+                        this.y = -10;
+                        break;
+                    case 1: // right
+                        this.x = canvas.width + 10;
+                        this.y = Math.random() * canvas.height;
+                        break;
+                    case 2: // bottom
+                        this.x = Math.random() * canvas.width;
+                        this.y = canvas.height + 10;
+                        break;
+                    case 3: // left
+                        this.x = -10;
+                        this.y = Math.random() * canvas.height;
+                        break;
+                }
+                
+                this.size = Math.random() * 2 + 1;
+                this.speedMultiplier = Math.random() * 0.5 + 0.5;
+                this.opacity = Math.random() * 0.5 + 0.3;
+            }
+
+            update() {
+                // Calculate direction to center
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2;
+                const dx = centerX - this.x;
+                const dy = centerY - this.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                // Increase speed as particles get closer to center
+                const speed = (1 / (distance + 100)) * 15;
+                
+                // Update position
+                this.x += dx * speed * this.speedMultiplier;
+                this.y += dy * speed * this.speedMultiplier;
+                
+                // Fade out as it gets closer to center
+                this.opacity = Math.max(0, this.opacity - speed * 0.1);
+                
+                // Reset particle if it's too close to center or completely faded
+                if (distance < 20 || this.opacity <= 0) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                ctx.fill();
+            }
+        }
+
+        // Create particle array
+        const particles = Array(100).fill().map(() => new Particle());
+
+        // Animation loop
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Update and draw particles
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            
+            requestAnimationFrame(animate);
+        }
+
+        // Start animation
+        animate();
+    </script>
+</body>
+</html> 

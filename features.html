@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Features | Simplexify</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: #030014;
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        .features-header {
+            text-align: center;
+            padding: 8rem 2rem 4rem;
+            background: linear-gradient(to bottom, rgba(3, 0, 20, 0.8), rgba(3, 0, 20, 0.95));
+        }
+
+        .features-header h1 {
+            font-size: 7rem;
+            font-weight: 50;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s ease forwards;
+        }
+
+        .features-header p {
+            font-size: 1.8rem;
+            color: #ffffff82;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s ease forwards 0.3s;
+        }
+
+        .highlight {
+            background: linear-gradient(
+                270deg,
+                #4c35de,
+                #e64aa9,
+                #ff6b6b,
+                #4834d4,
+                #686de0,
+                #be2edd
+            );
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientFlow 8s ease infinite;
+            position: relative;
+            display: inline-block;
+        }
+
+        .feature-section {
+            padding: 6rem 5%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .feature-card.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(120deg, #4c35de, #e64aa9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .feature-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .feature-card p {
+            font-size: 1.1rem;
+            color: #888;
+            line-height: 1.6;
+        }
+
+        .section-title {
+            font-size: 3.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(to right, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .stats-section {
+            padding: 4rem 5%;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(120deg, #4c35de, #e64aa9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .stat-item p {
+            font-size: 1.2rem;
+            color: #888;
+        }
+
+        @media (max-width: 768px) {
+            .features-header h1 {
+                font-size: 4rem;
+            }
+            .features-header p {
+                font-size: 1.4rem;
+            }
+            .section-title {
+                font-size: 2.5rem;
+            }
+            .feature-card h3 {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Sparkle Effects */
+        .sparkle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            background-color: white;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .sparkle-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        .sparkle:nth-child(1) { animation: sparkle 2s ease-in-out infinite; top: 10%; left: 10%; }
+        .sparkle:nth-child(2) { animation: sparkle 2s ease-in-out infinite 0.3s; top: 30%; right: 10%; }
+        .sparkle:nth-child(3) { animation: sparkle 2s ease-in-out infinite 0.6s; bottom: 20%; left: 20%; }
+        .sparkle:nth-child(4) { animation: sparkle 2s ease-in-out infinite 0.9s; bottom: 30%; right: 20%; }
+        .sparkle:nth-child(5) { animation: sparkle 2s ease-in-out infinite 1.2s; top: 50%; left: 15%; }
+        .sparkle:nth-child(6) { animation: sparkle 2s ease-in-out infinite 1.5s; bottom: 40%; right: 25%; }
+
+        /* New Sections Styles */
+        .feature-showcase {
+            padding: 6rem 5%;
+            position: relative;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .showcase-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: center;
+        }
+
+        .showcase-image {
+            position: relative;
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: all 0.8s ease;
+        }
+
+        .showcase-image.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .showcase-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+        }
+
+        .showcase-text {
+            opacity: 0;
+            transform: translateX(30px);
+            transition: all 0.8s ease;
+        }
+
+        .showcase-text.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .showcase-text h2 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .showcase-text p {
+            font-size: 1.2rem;
+            color: #888;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin: 2rem 0;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            color: #fff;
+        }
+
+        .feature-list li i {
+            margin-right: 1rem;
+            color: #4c35de;
+        }
+
+        .animated-cards {
+            display: flex;
+            overflow-x: auto;
+            gap: 1.5rem;
+            margin: 2rem 0;
+            padding: 1rem 0;
+            scroll-snap-type: x mandatory;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .animated-cards::-webkit-scrollbar {
+            display: none;
+        }
+
+        .animated-card {
+            min-width: 300px;
+            scroll-snap-align: start;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .animated-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .showcase-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .showcase-image, .showcase-text {
+                transform: translateY(30px);
+            }
+            
+            .feature-list li {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="features-header">
+        <h1>Powerful <span class="highlight">Features
+            <div class="sparkle"></div>
+            <div class="sparkle"></div>
+            <div class="sparkle"></div>
+            <div class="sparkle"></div>
+            <div class="sparkle"></div>
+            <div class="sparkle"></div>
+        </span></h1>
+        <p>Discover what makes Simplexify the <span class="highlight">ultimate learning platform</span></p>
+    </div>
+
+    <div class="feature-section">
+        <h2 class="section-title">Core <span class="highlight">Features</span></h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <i class="fas fa-graduation-cap feature-icon"></i>
+                <h3>Expert-Led Courses</h3>
+                <p>Learn from industry professionals with years of real-world experience. Get insights and knowledge that matter.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-code feature-icon"></i>
+                <h3>Interactive Learning</h3>
+                <p>Practice as you learn with hands-on coding exercises, real-time feedback, and interactive projects.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-certificate feature-icon"></i>
+                <h3>Certifications</h3>
+                <p>Earn industry-recognized certificates upon course completion to showcase your skills.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="feature-section" style="background: rgba(255, 255, 255, 0.02);">
+        <h2 class="section-title">Learning <span class="highlight">Tools</span></h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <i class="fas fa-video feature-icon"></i>
+                <h3>HD Video Content</h3>
+                <p>Crystal clear video lessons with closed captions and adjustable playback speeds.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-mobile-alt feature-icon"></i>
+                <h3>Mobile Learning</h3>
+                <p>Learn on the go with our mobile-optimized platform and offline access capabilities.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-comments feature-icon"></i>
+                <h3>Community Support</h3>
+                <p>Connect with fellow learners, share experiences, and get help when you need it.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="feature-showcase">
+        <div class="showcase-content">
+            <div class="showcase-image">
+                <img src="assets/images/vecteezy_3d-male-character-sitting-on-a-sofa-and-working-on-a-laptop_24387852.png" alt="Interactive Learning">
+                <div class="sparkle"></div>
+                <div class="sparkle"></div>
+                <div class="sparkle"></div>
+                <div class="sparkle"></div>
+            </div>
+            <div class="showcase-text">
+                <h2>Interactive <span class="highlight">Learning</span></h2>
+                <p>Experience a new way of learning with our interactive platform that adapts to your pace and style.</p>
+                <ul class="feature-list">
+                    <li><i class="fas fa-check-circle"></i> Real-time code execution</li>
+                    <li><i class="fas fa-check-circle"></i> Instant feedback system</li>
+                    <li><i class="fas fa-check-circle"></i> AI-powered suggestions</li>
+                    <li><i class="fas fa-check-circle"></i> Progress tracking</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="feature-section">
+        <h2 class="section-title">Popular <span class="highlight">Courses</span></h2>
+        <div class="animated-cards">
+            <div class="animated-card">
+                <i class="fas fa-code feature-icon"></i>
+                <h3>Web Development</h3>
+                <p>Master modern web development with React, Node.js, and more</p>
+                <div class="card-stats">
+                    <i class="fas fa-users"></i> 12,000+ students
+                    <i class="fas fa-star" style="margin-left: 1rem;"></i> 4.9
+                </div>
+            </div>
+            <div class="animated-card">
+                <i class="fas fa-robot feature-icon"></i>
+                <h3>AI & Machine Learning</h3>
+                <p>Build intelligent systems with Python and TensorFlow</p>
+                <div class="card-stats">
+                    <i class="fas fa-users"></i> 8,500+ students
+                    <i class="fas fa-star" style="margin-left: 1rem;"></i> 4.8
+                </div>
+            </div>
+            <div class="animated-card">
+                <i class="fas fa-palette feature-icon"></i>
+                <h3>UI/UX Design</h3>
+                <p>Create beautiful user interfaces with Figma and Adobe XD</p>
+                <div class="card-stats">
+                    <i class="fas fa-users"></i> 10,200+ students
+                    <i class="fas fa-star" style="margin-left: 1rem;"></i> 4.9
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h3>500+</h3>
+                <p>Expert Courses</p>
+            </div>
+            <div class="stat-item">
+                <h3>50K+</h3>
+                <p>Active Learners</p>
+            </div>
+            <div class="stat-item">
+                <h3>95%</h3>
+                <p>Success Rate</p>
+            </div>
+            <div class="stat-item">
+                <h3>24/7</h3>
+                <p>Support Available</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Animation for feature cards
+        function revealCards() {
+            const cards = document.querySelectorAll('.feature-card');
+            cards.forEach((card, index) => {
+                const cardTop = card.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (cardTop < windowHeight * 0.85) {
+                    setTimeout(() => {
+                        card.classList.add('active');
+                    }, index * 100);
+                }
+            });
+        }
+
+        // New showcase reveal function
+        function revealShowcase() {
+            const showcaseElements = document.querySelectorAll('.showcase-image, .showcase-text');
+            showcaseElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (elementTop < windowHeight * 0.85) {
+                    element.classList.add('active');
+                }
+            });
+        }
+
+        // Add horizontal scroll with mouse wheel for cards
+        document.querySelectorAll('.animated-cards').forEach(container => {
+            container.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                container.scrollLeft += e.deltaY;
+            });
+        });
+
+        window.addEventListener('scroll', () => {
+            revealCards();
+            revealShowcase();
+        });
+        window.addEventListener('load', () => {
+            revealCards();
+            revealShowcase();
+        });
+    </script>
+</body>
+</html> 

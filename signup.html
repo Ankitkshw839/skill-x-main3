@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | Simplexify</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, rgba(112, 66, 248, 0.4), rgba(0, 194, 255, 0.4)),
+                url('assets/images/texture.jpg') center center/cover no-repeat;
+            padding: 1.5rem;
+            position: relative;
+            background-blend-mode: screen;
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(20, 10, 40, 0.1);
+            z-index: 0;
+            pointer-events: none;
+        }
+        .login-container {
+            width: 520px;
+            height: 680px;
+            background: rgba(255, 255, 255, 0.003 );
+            border-radius: 22px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 7.23);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1.5px solid rgba(255,255,255,0.22);
+            padding: 2.2rem;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .login-container::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle, var(--gray-100) 0%, transparent 60%);
+            top: -25%;
+            left: -25%;
+            z-index: -1;
+            opacity: 0.6;
+        }
+        .login-header {
+            margin-bottom: 0.1rem;
+        }
+        .login-header h2 {
+            font-family: 'Poppins', 'Inter', sans-serif;
+            font-size: 2.88rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            color: #f7f7f7e7;
+        }
+        .form-group {
+            margin-bottom: 0.5rem;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--gray-700);
+        }
+        .input-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.7rem;
+        }
+        .input-group .form-input {
+            padding-left: 2.5rem;
+            background: rgba(255, 255, 255, 0);
+            border: 1.5px solid rgba(255,255,255,0.22);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 2px 8px 0 rgba(31, 38, 135, 0.05);
+            border-radius: 999px;
+        }
+        .input-group .input-icon {
+            position: absolute;
+            left: 1rem;
+            color: #fbfbfb98;
+            font-size: 1.1rem;
+            pointer-events: none;
+        }
+        .login-btn {
+            width: 100%;
+            padding: 0.85rem;
+            border: none;
+            border-radius: 999px;
+            background: var(--primary-color);
+            color: rgb(255, 255, 255);
+            font-weight: 500;
+            cursor: pointer;
+            border-color: #fff0f0;
+            transition: all 0.2s ease;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .login-btn:hover {
+            background: linear-gradient(to right, #a23ca4, #4581e1);
+            color: #ededed;
+            border-color: #fff0f0;
+            transform: translateY(-2px);
+        }
+        .login-footer {
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--gray-600);
+        }
+        .login-footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+        .social-login {
+            margin-top: 0.5rem;
+            display: flex;
+            gap: 0.7rem;
+            justify-content: center;
+        }
+        .social-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 999px;
+            background: white;
+            color: var(--gray-700);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .social-btn:hover {
+            background: var(--gray-100);
+            transform: translateY(-2px);
+        }
+        .social-btn.google:hover {
+            background: linear-gradient(to right, #EA4335, #4285F4, #34A853, #FBBC05);
+            color: white;
+            border-color: #fff0f0;
+            background-size: 300% 100%;
+            animation: google-colors 3s ease infinite;
+        }
+        @keyframes google-colors {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        .social-btn.facebook:hover {
+            background: #3b5998;
+            color: white;
+            border-color: #fff0f0;
+            border-color: #3b5998;
+        }
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 0.5rem 0;
+        }
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--gray-300);
+        }
+        .divider span {
+            padding: 0 1rem;
+            color: var(--gray-500);
+            font-size: 0.9rem;
+        }
+        .error-message {
+            color: #ff4d4f;
+            font-size: 0.92rem;
+            margin-top: 0.2rem;
+            min-height: 1.1em;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container animate-fade-in">
+        <div class="login-header">
+            <h2 style="margin-bottom: 0.8rem;">SIGN UP</h2>
+        </div>
+        <form id="signupForm" novalidate>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <div class="input-group">
+                    <span class="input-icon"><i class="fas fa-envelope"></i></span>
+                    <input type="email" id="email" name="email" class="form-input" placeholder="Email" required>
+                </div>
+                <div class="error-message" id="email-error"></div>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-group">
+                    <span class="input-icon"><i class="fas fa-lock"></i></span>
+                    <input type="password" id="password" name="password" class="form-input" placeholder="Password" required>
+                </div>
+                <div class="error-message" id="password-error"></div>
+            </div>
+            <div class="form-group">
+                <label for="rewrite-password">Rewrite Password</label>
+                <div class="input-group">
+                    <span class="input-icon"><i class="fas fa-lock"></i></span>
+                    <input type="password" id="rewrite-password" name="rewrite-password" class="form-input" placeholder="Rewrite Password" required>
+                </div>
+                <div class="error-message" id="rewrite-password-error"></div>
+            </div>
+            <button type="submit" class="login-btn">
+                <i class="fas fa-user-plus"></i> Sign Up
+            </button>
+        </form>
+        <div class="divider">
+            <span>OR</span>
+        </div>
+        <div class="social-login">
+            <button class="social-btn google">
+                <i class="fab fa-google"></i> Google
+            </button>
+            <button class="social-btn facebook">
+                <i class="fab fa-facebook-f"></i> Facebook
+            </button>
+        </div>
+        <div class="login-footer">
+            <p>Already have an account? <a href="login.html">Login</a></p>
+        </div>
+    </div>
+    <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-analytics.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCGV8-zgiG0z04OTU-bK7fbOWPLT4X6TFY",
+      authDomain: "simplexify.firebaseapp.com",
+      projectId: "simplexify",
+      storageBucket: "simplexify.firebasestorage.app",
+      messagingSenderId: "809236435012",
+      appId: "1:809236435012:web:18ade7317dda448c716c11",
+      measurementId: "G-H8667PT04T"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const auth = getAuth(app);
+
+    const signupForm = document.getElementById('signupForm');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const rewritePasswordInput = document.getElementById('rewrite-password');
+    const emailError = document.getElementById('email-error');
+    const passwordError = document.getElementById('password-error');
+    const rewritePasswordError = document.getElementById('rewrite-password-error');
+
+    function validateEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    signupForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      let valid = true;
+      emailError.textContent = '';
+      passwordError.textContent = '';
+      rewritePasswordError.textContent = '';
+
+      const email = emailInput.value.trim();
+      const password = passwordInput.value;
+      const rewritePassword = rewritePasswordInput.value;
+
+      // Email validation
+      if (!validateEmail(email)) {
+        emailError.textContent = 'Please enter a valid email address.';
+        valid = false;
+      }
+
+      // Password validation
+      if (password.length < 6) {
+        passwordError.textContent = 'Password must be at least 6 characters.';
+        valid = false;
+      }
+
+      // Rewrite password validation
+      if (password !== rewritePassword) {
+        rewritePasswordError.textContent = 'Passwords do not match!';
+        valid = false;
+      }
+
+      if (!valid) return;
+
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        alert('Signup successful! Welcome, ' + userCredential.user.email);
+        window.location.href = 'welcome2.html';
+      } catch (error) {
+        alert('Signup failed: ' + error.message);
+      }
+    });
+
+    // Google signup
+    const googleBtn = document.querySelector('.social-btn.google');
+    if (googleBtn) {
+      googleBtn.addEventListener('click', async () => {
+        const provider = new GoogleAuthProvider();
+        try {
+          const result = await signInWithPopup(auth, provider);
+          alert('Google signup successful! Welcome, ' + result.user.displayName);
+          window.location.href = 'welcome2.html';
+        } catch (error) {
+          alert('Google signup failed: ' + error.message);
+        }
+      });
+    }
+
+    // Facebook signup
+    const facebookBtn = document.querySelector('.social-btn.facebook');
+    if (facebookBtn) {
+      facebookBtn.addEventListener('click', async () => {
+        const provider = new FacebookAuthProvider();
+        try {
+          const result = await signInWithPopup(auth, provider);
+          alert('Facebook signup successful! Welcome, ' + result.user.displayName);
+          window.location.href = 'welcome2.html';
+        } catch (error) {
+          alert('Facebook signup failed: ' + error.message);
+        }
+      });
+    }
+    </script>
+</body>
+</html>

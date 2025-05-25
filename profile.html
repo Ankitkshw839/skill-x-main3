@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile | Simplexify</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fc;
+            color: #1a1a1a;
+            min-height: 100vh;
+        }
+
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem 5%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo i {
+            background: linear-gradient(120deg, #4c35de, #e64aa9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #1a1a1a;
+            text-decoration: none;
+            margin-left: 2.5rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+        }
+
+        .nav-links a i {
+            font-size: 1rem;
+        }
+
+        .profile-container {
+            max-width: 1000px;
+            margin: 100px auto 2rem;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            animation: fadeIn 0.8s ease;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 3px solid transparent;
+            background: white;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-avatar::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -0px;
+            right: -3px;
+            bottom: -10px;
+            background: linear-gradient(120deg, #4c35de, #e64aa9);
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        .profile-avatar img {
+            width: 128%;
+            height: 128%;
+            object-fit: contain;
+            display: block;
+            position: relative;
+            transform: translateY(-5%);
+        }
+
+        .profile-header-info {
+            flex-grow: 1;
+        }
+
+        .profile-header-info h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1a1a1a;
+        }
+
+        .profile-header-info h1 .gradient-text {
+            background: linear-gradient(
+                270deg,
+                #4c35de,
+                #e64aa9,
+                #ff6b6b,
+                #4834d4,
+                #686de0,
+                #be2edd
+            );
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientFlow 8s ease infinite;
+            display: inline-block;
+        }
+
+        .profile-header-info p {
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        .profile-sections-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            animation: fadeIn 1s ease 0.3s backwards;
+        }
+
+        .profile-section {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .profile-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-section.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            color: #1a1a1a;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title span {
+            background: linear-gradient(
+                270deg,
+                #4c35de,
+                #e64aa9,
+                #ff6b6b,
+                #4834d4
+            );
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientFlow 8s ease infinite;
+        }
+
+        .edit-btn {
+            background: #f8f9fc;
+            border: none;
+            color: #4c35de;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .edit-btn:hover {
+            background: #f0f2f9;
+            transform: translateY(-2px);
+        }
+
+        .profile-fields-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .profile-field {
+            margin-bottom: 1rem;
+        }
+
+        .profile-field label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .profile-field span {
+            font-size: 1rem;
+            color: #1a1a1a;
+            padding: 0.5rem 0;
+            display: block;
+        }
+
+        .profile-field input, .profile-field select {
+            width: 100%;
+            font-size: 1rem;
+            padding: 0.75rem 1rem;
+            background: #f8f9fc;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            color: #1a1a1a;
+            display: none;
+            transition: all 0.3s ease;
+        }
+
+        .profile-field input:focus, .profile-field select:focus {
+            outline: none;
+            border-color: #4c35de;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(76, 53, 222, 0.1);
+        }
+
+        .profile-field.editing span {
+            display: none;
+        }
+
+        .profile-field.editing input, .profile-field.editing select {
+            display: block;
+        }
+
+        .interests-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 0.75rem;
+            margin-top: 0.75rem;
+        }
+
+        .interest-tag {
+            background: #f8f9fc;
+            border: 1px solid rgba(76, 53, 222, 0.2);
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+            color: #4c35de;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .interest-tag:hover {
+            background: #f0f2f9;
+            transform: translateY(-2px);
+        }
+
+        .save-btn {
+            background: linear-gradient(120deg, #4c35de, #e64aa9);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 20px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: none;
+            margin-top: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(76, 53, 222, 0.3);
+        }
+
+        .save-btn.visible {
+            display: inline-block;
+        }
+
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            display: none;
+        }
+
+        .loading.visible {
+            display: flex;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid #4c35de;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+        }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes gradientFlow {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+                padding: 1.5rem;
+            }
+
+            .profile-header-info h1 {
+                font-size: 2rem;
+        }
+
+            .profile-sections-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-fields-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links a span {
+                display: none;
+            }
+
+            .nav-links a {
+                margin-left: 1.5rem;
+        }
+        }
+
+        #profilePictureInput {
+            display: none;
+        }
+
+        .highlight {
+            background: linear-gradient(
+                270deg,
+                #4c35de,
+                #e64aa9,
+                #ff6b6b,
+                #4834d4,
+                #686de0,
+                #be2edd
+            );
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientFlow 8s ease infinite;
+            position: relative;
+            display: inline-block;
+        }
+
+        .sparkle-container {
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            right: -20px;
+            bottom: -20px;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background-color: white;
+            opacity: 0;
+            pointer-events: none;
+            box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.3);
+        }
+
+        .sparkle:nth-child(1) { animation: moveSparkle 3s ease-in-out infinite; top: 20%; left: 0%; }
+        .sparkle:nth-child(2) { animation: moveSparkle 3s ease-in-out infinite 0.5s; top: 60%; left: 10%; }
+        .sparkle:nth-child(3) { animation: moveSparkle 3s ease-in-out infinite 1s; top: 30%; right: 10%; }
+        .sparkle:nth-child(4) { animation: moveSparkle 3s ease-in-out infinite 1.5s; top: 70%; right: 20%; }
+        .sparkle:nth-child(5) { animation: moveSparkle 3s ease-in-out infinite 2s; top: 40%; left: 30%; }
+        .sparkle:nth-child(6) { animation: moveSparkle 3s ease-in-out infinite 2.5s; top: 80%; right: 30%; }
+
+        @keyframes moveSparkle {
+            0% {
+                transform: translate(0, 0) scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: translate(20px, -20px) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(40px, -40px) scale(0);
+                opacity: 0;
+            }
+        }
+
+        .highlight::before,
+        .highlight::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: white;
+            box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.3);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .highlight::before {
+            top: 0;
+            left: 0;
+            animation: twinkle 2s ease-in-out infinite;
+        }
+
+        .highlight::after {
+            bottom: 0;
+            right: 0;
+            animation: twinkle 2s ease-in-out infinite 1s;
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        /* Add styles for the courses wheel chart section */
+        .chart-container {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .chart-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            justify-content: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+        }
+
+        .empty-chart-message {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <a href="welcome2.html" class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            Simplexify
+        </a>
+        <div class="nav-links">
+            <a href="welcome2.html"><i class="fas fa-home"></i> <span>Home</span></a>
+            <a href="mycourses.html"><i class="fas fa-book-open"></i> <span>My Courses</span></a>
+            <a href="dashboard.html"><i class="fas fa-chart-bar"></i> <span>Dashboard</span></a>
+            <a href="profile.html"><i class="fas fa-user"></i> <span>Profile</span></a>
+            <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a>
+        </div>
+        </nav>
+
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+
+    <div class="profile-container">
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <img src="assets/images/boy.png" alt="Profile Avatar">
+                    </div>
+            <div class="profile-header-info">
+                <h1>
+                    <span class="gradient-text highlight">
+                        Your Profile
+                        <div class="sparkle-container">
+                            <div class="sparkle"></div>
+                            <div class="sparkle"></div>
+                            <div class="sparkle"></div>
+                            <div class="sparkle"></div>
+                            <div class="sparkle"></div>
+                            <div class="sparkle"></div>
+                </div>
+                    </span>
+                </h1>
+                <p>Manage your personal information and preferences</p>
+            </div>
+        </div>
+
+        <div class="profile-sections-grid">
+            <div class="profile-section">
+                <div class="section-title">
+                    <span>Personal Information</span>
+                    <button class="edit-btn" onclick="toggleEdit('personal')">
+                        <i class="fas fa-pencil-alt"></i> Edit
+                    </button>
+                </div>
+                <div class="profile-fields-grid">
+                    <div class="profile-field" data-field="name">
+                        <label>Full Name</label>
+                        <span></span>
+                        <input type="text" placeholder="Enter your full name">
+                    </div>
+                    <div class="profile-field" data-field="email">
+                        <label>Email</label>
+                        <span></span>
+                        <input type="email" readonly>
+                    </div>
+                    <div class="profile-field" data-field="dob">
+                        <label>Date of Birth</label>
+                        <span></span>
+                        <input type="date">
+                    </div>
+                    <div class="profile-field" data-field="occupation">
+                        <label>Occupation</label>
+                        <span></span>
+                        <input type="text" placeholder="Enter your occupation">
+                    </div>
+                    <div class="profile-field" data-field="phone">
+                        <label>Phone Number</label>
+                        <span></span>
+                        <input type="tel" placeholder="Enter your 10-digit phone number" maxlength="10" pattern="[0-9]{10}">
+                    </div>
+                </div>
+                <button class="save-btn" data-section="personal">Save Changes</button>
+            </div>
+
+            <div class="profile-section">
+                <div class="section-title">
+                    <span>Location</span>
+                    <button class="edit-btn" onclick="toggleEdit('location')">
+                        <i class="fas fa-pencil-alt"></i> Edit
+                    </button>
+                    </div>
+                <div class="profile-fields-grid">
+                    <div class="profile-field" data-field="country">
+                        <label>Country</label>
+                        <span></span>
+                        <select id="country" onchange="updateCities()"></select>
+                    </div>
+                    <div class="profile-field" data-field="city">
+                        <label>City</label>
+                        <span></span>
+                        <select id="city"></select>
+                    </div>
+                </div>
+                <button class="save-btn" data-section="location">Save Changes</button>
+            </div>
+
+            <div class="profile-section full-width">
+                <div class="section-title">
+                    <span>Learning Preferences</span>
+                    <button class="edit-btn" onclick="window.location.href='onboarding.html'">
+                        <i class="fas fa-pencil-alt"></i> Update
+                    </button>
+                        </div>
+                <div class="profile-fields-grid">
+                    <div class="profile-field" data-field="mainInterest">
+                        <label>Main Interest</label>
+                        <span></span>
+                    </div>
+                    <div class="profile-field" data-field="experienceLevel">
+                        <label>Experience Level</label>
+                        <span></span>
+                    </div>
+                    <div class="profile-field full-width" data-field="specificInterests">
+                        <label>Specific Interests</label>
+                        <div class="interests-grid"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-section full-width">
+                <h3 class="section-title">
+                    <span>My Learning Journey</span>
+                </h3>
+                <div id="courses-chart-container" class="chart-container">
+                    <canvas id="coursesChart"></canvas>
+                </div>
+                <div id="chart-legend" class="chart-legend">
+                    <!-- Legend items will be added dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { auth, handleLogout } from './auth.js';
+        import { getDatabase, ref, get, onValue, update } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-database.js";
+        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-storage.js";
+        import { getEnrolledCourses } from './courseEnrollment.js';
+
+        const database = getDatabase();
+        const storage = getStorage();
+        let currentUserData = null;
+        let coursesChart = null;
+
+        // Load user data when auth state changes
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                loadUserData(user.uid);
+            }
+        });
+
+        // Load user data from Firebase
+        function loadUserData(userId) {
+            showLoading(true);
+            const userRef = ref(database, 'users/' + userId);
+            onValue(userRef, (snapshot) => {
+                showLoading(false);
+                const data = snapshot.val();
+                if (data) {
+                    currentUserData = data;
+                    updateProfileUI(data);
+                }
+            }, (error) => {
+                showLoading(false);
+                console.error("Error loading user data:", error);
+                alert('Error loading your profile data. Please try again later.');
+            });
+        }
+
+        // Update profile UI with user data
+        function updateProfileUI(data) {
+            // Update header with user's name if exists
+            const headerTitle = document.querySelector('.profile-header-info h1');
+            if (data.name) {
+                headerTitle.innerHTML = `
+                    <span class="gradient-text highlight">
+                        ${data.name}
+                        <div class="sparkle-container">
+                            <div class="sparkle"></div>
+                            <div class="sparkle"></div>
+                            <div class="sparkle"></div>
+                            <div class="sparkle"></div>
+                            <div class="sparkle"></div>
+                            <div class="sparkle"></div>
+                        </div>
+                    </span>`;
+            }
+
+            // Update other fields
+            setFieldValue('name', data.name || '');
+            setFieldValue('email', data.email || '');
+            setFieldValue('dob', data.personalInfo?.dob || '');
+            setFieldValue('occupation', data.personalInfo?.occupation || '');
+            setFieldValue('phone', data.personalInfo?.phone || '');
+
+            // Update location
+            setFieldValue('country', data.location?.country || '');
+            setFieldValue('city', data.location?.city || '');
+
+            // Update learning preferences
+            setFieldValue('mainInterest', data.mainInterest || '');
+            setFieldValue('experienceLevel', data.experienceLevel || '');
+
+            // Update specific interests
+            const interestsGrid = document.querySelector('.interests-grid');
+            interestsGrid.innerHTML = '';
+            if (data.specificInterests && data.specificInterests.length > 0) {
+                data.specificInterests.forEach(interest => {
+                    const interestTag = document.createElement('div');
+                    interestTag.className = 'interest-tag';
+                    interestTag.textContent = interest.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                    interestsGrid.appendChild(interestTag);
+                });
+            }
+
+            // Initialize country dropdown
+            initializeCountries();
+        }
+
+        // Set field value and update UI
+        function setFieldValue(fieldName, value) {
+            const field = document.querySelector(`[data-field="${fieldName}"]`);
+            if (field) {
+                const span = field.querySelector('span');
+                const input = field.querySelector('input, select');
+                if (span) span.textContent = value;
+                if (input) input.value = value;
+            }
+        }
+
+        // Toggle edit mode for a section
+        window.toggleEdit = function(section) {
+            const container = document.querySelector(`[data-section="${section}"]`).closest('.profile-section');
+            const fields = container.querySelectorAll('.profile-field');
+            const saveBtn = container.querySelector('.save-btn');
+
+            fields.forEach(field => field.classList.add('editing'));
+            saveBtn.classList.add('visible');
+        }
+
+        // Save changes for a section
+        async function saveChanges(section) {
+            const user = auth.currentUser;
+            if (!user) return;
+
+            showLoading(true);
+            const container = document.querySelector(`[data-section="${section}"]`).closest('.profile-section');
+            const fields = container.querySelectorAll('.profile-field');
+            const updates = {};
+
+            fields.forEach(field => {
+                const fieldName = field.dataset.field;
+                const input = field.querySelector('input, select');
+                if (input && input.value) {
+                    if (section === 'personal') {
+                        if (fieldName === 'name' || fieldName === 'email') {
+                            updates[fieldName] = input.value;
+                        } else {
+                            updates[`personalInfo/${fieldName}`] = input.value;
+                        }
+                    } else if (section === 'location') {
+                        updates[`location/${fieldName}`] = input.value;
+                    }
+                }
+            });
+
+            try {
+                await update(ref(database, 'users/' + user.uid), updates);
+                
+                // Update header immediately if name was changed
+                if (updates.name) {
+                    document.querySelector('.profile-header-info h1').innerHTML = `
+                        <span class="gradient-text highlight">
+                            ${updates.name}
+                            <div class="sparkle-container">
+                                <div class="sparkle"></div>
+                                <div class="sparkle"></div>
+                                <div class="sparkle"></div>
+                                <div class="sparkle"></div>
+                                <div class="sparkle"></div>
+                                <div class="sparkle"></div>
+                            </div>
+                        </span>`;
+                }
+                
+                // Reset edit mode
+                fields.forEach(field => field.classList.remove('editing'));
+                container.querySelector('.save-btn').classList.remove('visible');
+                
+                alert('Changes saved successfully!');
+            } catch (error) {
+                console.error("Error saving changes:", error);
+                alert('Error saving changes. Please try again.');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Initialize country dropdown
+        function initializeCountries() {
+            const countrySelect = document.getElementById('country');
+            if (!countrySelect) return;
+
+            // Clear existing options
+            countrySelect.innerHTML = '<option value="">Select your country</option>';
+
+            // Add countries
+            const countries = [
+                "United States", "United Kingdom", "Canada", "Australia", "India",
+                "Germany", "France", "Japan", "China", "Brazil"
+            ].sort();
+
+            countries.forEach(country => {
+                const option = document.createElement('option');
+                option.value = country;
+                option.textContent = country;
+                countrySelect.appendChild(option);
+            });
+
+            // Set current value if exists
+            if (currentUserData?.location?.country) {
+                countrySelect.value = currentUserData.location.country;
+                updateCities();
+            }
+        }
+
+        // Update cities based on selected country
+        window.updateCities = function() {
+            const countrySelect = document.getElementById('country');
+            const citySelect = document.getElementById('city');
+            if (!countrySelect || !citySelect) return;
+
+            const selectedCountry = countrySelect.value;
+            citySelect.innerHTML = '<option value="">Select your city</option>';
+
+            if (selectedCountry) {
+                const cities = {
+                    "United States": ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix"],
+                    "United Kingdom": ["London", "Manchester", "Birmingham", "Glasgow", "Liverpool"],
+                    "Canada": ["Toronto", "Vancouver", "Montreal", "Calgary", "Ottawa"],
+                    "Australia": ["Sydney", "Melbourne", "Brisbane", "Perth", "Adelaide"],
+                    "India": ["Mumbai", "Delhi", "Bangalore", "Hyderabad", "Chennai"],
+                    "Germany": ["Berlin", "Hamburg", "Munich", "Cologne", "Frankfurt"],
+                    "France": ["Paris", "Marseille", "Lyon", "Toulouse", "Nice"],
+                    "Japan": ["Tokyo", "Osaka", "Nagoya", "Sapporo", "Fukuoka"],
+                    "China": ["Shanghai", "Beijing", "Guangzhou", "Shenzhen", "Chengdu"],
+                    "Brazil": ["São Paulo", "Rio de Janeiro", "Brasília", "Salvador", "Fortaleza"]
+                }[selectedCountry] || [];
+
+                cities.forEach(city => {
+                    const option = document.createElement('option');
+                    option.value = city;
+                    option.textContent = city;
+                    citySelect.appendChild(option);
+                });
+
+                // Set current value if exists
+                if (currentUserData?.location?.city) {
+                    citySelect.value = currentUserData.location.city;
+                }
+            }
+        }
+
+        // Show/hide loading spinner
+        function showLoading(show) {
+            const loader = document.querySelector('.loading');
+            if (show) {
+                loader.classList.add('visible');
+            } else {
+                loader.classList.remove('visible');
+                }
+        }
+
+        // Add event listeners to save buttons
+        document.querySelectorAll('.save-btn').forEach(btn => {
+            btn.addEventListener('click', () => saveChanges(btn.dataset.section));
+        });
+
+        // Update logout button event listener to use the new handleLogout function
+        document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+
+        // Function to create the courses wheel chart
+        async function createCoursesChart() {
+            try {
+                // Get enrolled courses
+                const enrolledCourses = await getEnrolledCourses();
+                
+                console.log("Creating wheel chart with courses:", enrolledCourses);
+                
+                const chartContainer = document.getElementById('courses-chart-container');
+                const legendContainer = document.getElementById('chart-legend');
+                
+                // Check if we have courses to display
+                if (!Array.isArray(enrolledCourses) || enrolledCourses.length === 0) {
+                    chartContainer.innerHTML = `
+                        <div class="empty-chart-message">
+                            <i class="fas fa-chart-pie" style="font-size: 3rem; color: #ddd; margin-bottom: 1rem;"></i>
+                            <p>You haven't enrolled in any courses yet.</p>
+                            <a href="mycourses.html" style="color: #4c35de; text-decoration: none; display: inline-block; margin-top: 1rem;">
+                                Browse Courses <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    `;
+                    legendContainer.innerHTML = '';
+                    return;
+                }
+                
+                // Define chart colors - vibrant colors that work well together
+                const colors = [
+                    '#4834d4', '#eb4d4b', '#6ab04c', '#f0932b', '#be2edd',
+                    '#686de0', '#badc58', '#f9ca24', '#22a6b3', '#e056fd',
+                    '#7ed6df', '#e17055', '#0984e3', '#d63031', '#fdcb6e'
+                ];
+                
+                // Prepare data for the chart
+                const labels = enrolledCourses.map(course => course.title);
+                const data = enrolledCourses.map(course => course.duration || 1); // Use duration as the value
+                const backgroundColors = colors.slice(0, enrolledCourses.length);
+                
+                // Create the chart
+                const ctx = document.getElementById('coursesChart').getContext('2d');
+                
+                // Destroy previous chart if it exists
+                if (coursesChart) {
+                    coursesChart.destroy();
+                }
+                
+                coursesChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: data,
+                            backgroundColor: backgroundColors,
+                            borderColor: 'rgba(255, 255, 255, 0.5)',
+                            borderWidth: 2,
+                            hoverOffset: 15
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const label = context.label || '';
+                                        const value = context.raw || 0;
+                                        const course = enrolledCourses[context.dataIndex];
+                                        const progress = course.progress || 0;
+                                        return [
+                                            label,
+                                            `Duration: ${value} weeks`,
+                                            `Progress: ${progress}%`
+                                        ];
+                                    }
+                                }
+                            }
+                        },
+                        cutout: '60%',
+                        animation: {
+                            animateScale: true,
+                            animateRotate: true
+                        }
+                    }
+                });
+                
+                // Create custom legend
+                legendContainer.innerHTML = '';
+                
+                labels.forEach((label, index) => {
+                    const course = enrolledCourses[index];
+                    const legendItem = document.createElement('div');
+                    legendItem.className = 'legend-item';
+                    legendItem.innerHTML = `
+                        <div class="legend-color" style="background-color: ${backgroundColors[index]}"></div>
+                        <span>${label} (${course.progress || 0}%)</span>
+                    `;
+                    
+                    // Add click event to highlight the corresponding segment
+                    legendItem.addEventListener('click', () => {
+                        // Find which segment is active
+                        const activeSegments = coursesChart.getActiveElements();
+                        
+                        // If this segment is already active, deactivate all
+                        if (activeSegments.length === 1 && activeSegments[0].index === index) {
+                            coursesChart.setActiveElements([]);
+                        } else {
+                            // Otherwise activate just this segment
+                            coursesChart.setActiveElements([{
+                                datasetIndex: 0,
+                                index: index
+                            }]);
+                        }
+                        
+                        coursesChart.update();
+                    });
+                    
+                    legendContainer.appendChild(legendItem);
+                });
+                
+            } catch (error) {
+                console.error("Error creating courses chart:", error);
+                document.getElementById('courses-chart-container').innerHTML = `
+                    <div class="empty-chart-message">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: #d63031; margin-bottom: 1rem;"></i>
+                        <p>Unable to load your courses data.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Listen for authentication state changes
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                try {
+                    // Load user profile data
+                    loadUserProfile(user.uid);
+                    
+                    // Create the courses chart
+                    createCoursesChart();
+                    
+                    // Listen for changes in user's courses
+                    const enrollmentsRef = ref(database, `users/${user.uid}/enrolledCourses`);
+                    onValue(enrollmentsRef, () => {
+                        console.log("Enrolled courses updated, refreshing chart");
+                        createCoursesChart();
+                    });
+                    
+                } catch (error) {
+                    console.error("Error initializing profile:", error);
+                }
+            } else {
+                // Redirect to login if not logged in
+                window.location.href = "login.html";
+            }
+        });
+
+        async function loadUserProfile(userId) {
+            // Your existing loadUserProfile function...
+        }
+
+        function handleProfilePictureClick() {
+            document.getElementById('profilePictureInput').click();
+        }
+
+        function handleProfilePictureChange(event) {
+            const file = event.target.files[0];
+            if (file) {
+                showLoading(true);
+                
+                // Upload to Firebase Storage
+                const user = auth.currentUser;
+                if (!user) {
+                    showLoading(false);
+                    return;
+                }
+                
+                // Create storage reference
+                const profilePicRef = storageRef(storage, `profile-pictures/${user.uid}`);
+                
+                // Upload file
+                uploadBytes(profilePicRef, file).then((snapshot) => {
+                    // Get download URL
+                    getDownloadURL(snapshot.ref).then((downloadURL) => {
+                        // Update profile picture in database
+                        update(ref(database, 'users/' + user.uid), {
+                            profilePicture: downloadURL
+                        }).then(() => {
+                            // Update UI
+                            document.getElementById('profilePicture').src = downloadURL;
+                            showLoading(false);
+                        }).catch((error) => {
+                            console.error("Error updating profile picture URL:", error);
+                            showLoading(false);
+                        });
+                    }).catch((error) => {
+                        console.error("Error getting download URL:", error);
+                        showLoading(false);
+                    });
+                }).catch((error) => {
+                    console.error("Error uploading profile picture:", error);
+                    showLoading(false);
+                });
+            }
+        }
+    </script>
+</body>
+</html>

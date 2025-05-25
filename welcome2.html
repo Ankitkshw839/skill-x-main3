@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simplexify - Personalized Learning</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-color: #3366ED;
+            --secondary-color: #4376f8;
+            --light-bg: #f5f5f5;
+        }
+
+        header {
+            background: white;
+            padding: 1rem 5%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        nav a {
+            margin-left: 2rem;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .hero {
+            margin-top: 80px;
+            padding: 6rem 5%;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                url('assets/images/9027293.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .page-header {
+            margin-top: 80px;
+            padding: 4rem 5%;
+            background: #3366ED;
+            color: white;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            max-width: 800px;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        .categories {
+            padding: 5rem 5%;
+            background-color: white;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gray-800);
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            color: var(--gray-600);
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 3rem;
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .category-card {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            min-height: 280px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            z-index: 1;
+            border: 1px solid var(--gray-200);
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.05;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .category-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .category-card i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .category-card h3 {
+            margin-bottom: 1rem;
+            color: var(--gray-800);
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .category-card p {
+            color: var(--gray-600);
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .category-card .btn {
+            margin-top: auto;
+            border-radius: 50px;
+        }
+
+        .category-card:nth-child(1)::before {
+            background-image: url('https://img.freepik.com/free-vector/programming-concept-illustration_114360-1351.jpg');
+        }
+
+        .category-card:nth-child(2)::before {
+            background-image: url('https://img.freepik.com/free-vector/business-team-putting-together-jigsaw-puzzle-isolated-flat-illustration_74855-11070.jpg');
+        }
+
+        .category-card:nth-child(3)::before {
+            background-image: url('https://img.freepik.com/free-vector/gradient-ui-ux-background_23-2149024929.jpg');
+        }
+
+        .courses {
+            padding: 5rem 5%;
+            background-color: var(--gray-100);
+        }
+
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid var(--gray-200);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .course-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .course-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .course-card:hover .course-image img {
+            transform: scale(1.05);
+        }
+
+        .course-content {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .course-content h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--gray-800);
+        }
+
+        .course-content p {
+            color: var(--gray-600);
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-container {
+            margin-top: auto;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--gray-600);
+        }
+
+        .difficulty {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: var(--gray-100);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: var(--gray-700);
+            font-weight: 500;
+            margin-top: 1rem;
+        }
+
+        footer {
+            background: var(--gray-800);
+            color: white;
+            padding: 4rem 5% 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-column h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-column ul li a {
+            color: var(--gray-400);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid var(--gray-700);
+            text-align: center;
+            color: var(--gray-400);
+            font-size: 0.875rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            color: var(--gray-400);
+            font-size: 1.25rem;
+            transition: color 0.2s ease;
+        }
+
+        .social-links a:hover {
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.75rem;
+            }
+        }
+
+        /* Login button in header */
+        .login-button {
+            padding: 0.5rem 1.2rem;
+            font-size: 0.9rem;
+            margin-left: 1rem;
+            box-shadow: var(--shadow);
+        }
+
+        .login-button:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.8s ease;
+        }
+        
+        .scroll-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .image-reveal {
+            opacity: 0;
+            transform: translateY(-100px);
+            transition: all 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .image-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .image-reveal::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, var(--primary-color), transparent);
+            opacity: 0.3;
+            transition: opacity 1s ease;
+            pointer-events: none;
+        }
+
+        .image-reveal.active::after {
+            opacity: 0;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        .feature-card.pace {
+            background: linear-gradient(135deg, #e0f2fe, #ffffff);
+            border-left: 4px solid #0ea5e9;
+        }
+
+        .feature-card.expert {
+            background: linear-gradient(135deg, #fce7f3, #ffffff);
+            border-left: 4px solid #ec4899;
+        }
+
+        .feature-card.interactive {
+            background: linear-gradient(135deg, #ddd6fe, #ffffff);
+            border-left: 4px solid #8b5cf6;
+        }
+
+        .feature-card.certificate {
+            background: linear-gradient(135deg, #d9f99d, #ffffff);
+            border-left: 4px solid #84cc16;
+        }
+
+        .feature-card.community {
+            background: linear-gradient(135deg, #fed7aa, #ffffff);
+            border-left: 4px solid #f97316;
+        }
+
+        .feature-icon {
+            font-size: 1.25rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.1rem;
+        }
+
+        .feature-card p {
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .course-card .btn {
+            border-radius: 50px;
+        }
+
+        .hero .btn {
+            border-radius: 50px;
+        }
+
+        .nav .btn {
+            border-radius: 50px;
+        }
+
+        .btn {
+            border-radius: 50px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="welcome2.html" class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            Simplexify
+        </a>
+        <nav>
+            <a href="welcome2.html"><i class="fas fa-home"></i> Home</a>
+            <a href="mycourses.html"><i class="fas fa-book-open"></i> My Courses</a>
+            <a href="dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a>
+            <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+            <a href="onboarding.html" class="btn btn-primary login-button"><i class="fas fa-compass"></i> Interests</a>
+            <a href="#" class="btn btn-primary login-button" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </nav>
+    </header>
+
+    <section class="hero animate-fade-in">
+        <h1 style="
+            font-family: 'SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            font-weight: 600;
+            font-style: normal;
+            letter-spacing: -0.5px;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+        ">Transform Your Future With Expert-Led Learning</h1>
+        <p>Discover courses taught by industry experts and take your skills to the next level</p>
+        <a href="mycourses.html" class="btn btn-primary">
+            <i class="fas fa-play-circle"></i> Start Learning
+        </a>
+    </section>
+
+    <section class="learning-promo" style="
+        padding: 4rem 5%;
+        background: linear-gradient(to right, rgba(255,255,255,0.95), rgba(255,255,255,0.8)), var(--light-bg);
+        overflow: hidden;
+    ">
+        <div class="scroll-reveal" style="
+            text-align: center;
+            margin-bottom: 2.5rem;
+        ">
+            <h2 style="
+                font-size: 2.8rem;
+                margin-bottom: 1rem;
+                color: var(--gray-800);
+                line-height: 1.2;
+            ">Transform Your Learning Experience</h2>
+            <p style="
+                font-size: 1.2rem;
+                color: var(--gray-600);
+                max-width: 800px;
+                margin: 0 auto;
+            ">Discover a new way of learning that adapts to your needs and schedule</p>
+        </div>
+
+        <div style="
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            align-items: center;
+        ">
+            <div class="scroll-reveal" style="display: flex; flex-direction: column; gap: 1rem;">
+                <div class="feature-card pace">
+                    <i class="fas fa-clock feature-icon" style="color: #0ea5e9;"></i>
+                    <h3 style="margin-bottom: 0.3rem; color: var(--gray-800);">Learn at Your Own Pace</h3>
+                    <p style="color: var(--gray-600);">Set your own schedule and learn when it works best for you.</p>
+                </div>
+                
+                <div class="feature-card expert">
+                    <i class="fas fa-users feature-icon" style="color: #ec4899;"></i>
+                    <h3 style="margin-bottom: 0.3rem; color: var(--gray-800);">Expert-Led Courses</h3>
+                    <p style="color: var(--gray-600);">Learn from industry professionals with real-world experience.</p>
+                </div>
+
+                <div class="feature-card interactive">
+                    <i class="fas fa-laptop-code feature-icon" style="color: #8b5cf6;"></i>
+                    <h3 style="margin-bottom: 0.3rem; color: var(--gray-800);">Interactive Learning</h3>
+                    <p style="color: var(--gray-600);">Engage with hands-on projects and real-world applications.</p>
+                </div>
+            </div>
+
+            <div class="image-reveal" style="display: flex; justify-content: center;">
+                <img src="assets/images/vecteezy_3d-male-character-sitting-on-a-sofa-and-working-on-a-laptop_24387852.png" 
+                     alt="Student learning online" 
+                     style="
+                        max-width: 80%;
+                        height: auto;
+                        transform: perspective(1000px) rotateY(-5deg);
+                     ">
+            </div>
+        </div>
+    </section>
+
+    <section class="learning-benefits" style="
+        padding: 4rem 5%;
+        background: linear-gradient(to left, rgba(255,255,255,0.95), rgba(255,255,255,0.8)), var(--light-bg);
+    ">
+        <div style="
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            align-items: center;
+        ">
+            <div class="image-reveal" style="display: flex; justify-content: center;">
+                <img src="assets/images/girl.png" 
+                     alt="Student success" 
+                     style="
+                        max-width: 80%;
+                        height: auto;
+                     ">
+            </div>
+
+            <div class="scroll-reveal" style="display: flex; flex-direction: column; gap: 1rem;">
+                <h2 style="
+                    font-size: 2.5rem;
+                    margin-bottom: 1rem;
+                    color: var(--gray-800);
+                    line-height: 1.2;
+                ">Achieve Your Goals</h2>
+                
+                <div class="feature-card certificate">
+                    <i class="fas fa-certificate feature-icon" style="color: #84cc16;"></i>
+                    <h3 style="margin-bottom: 0.3rem; color: var(--gray-800);">Earn Certificates</h3>
+                    <p style="color: var(--gray-600);">Get recognized for your achievements with certificates.</p>
+                </div>
+
+                <div class="feature-card community">
+                    <i class="fas fa-comments feature-icon" style="color: #f97316;"></i>
+                    <h3 style="margin-bottom: 0.3rem; color: var(--gray-800);">Community Support</h3>
+                    <p style="color: var(--gray-600);">Connect with fellow learners and mentors.</p>
+                </div>
+
+                <a href="mycourses.html" class="btn btn-primary" style="
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    padding: 0.8rem 1.5rem;
+                    font-size: 1.1rem;
+                    border-radius: 8px;
+                    width: fit-content;
+                    margin-top: 0.5rem;
+                ">
+                    <i class="fas fa-rocket"></i>
+                    Start Learning Now
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script type="module">
+        import { auth, handleLogout } from './auth.js';
+        
+        // Add logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+
+        // Scroll reveal animation
+        function revealOnScroll() {
+            const elements = document.querySelectorAll('.scroll-reveal, .image-reveal');
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                // Different trigger point for images vs text
+                const triggerPoint = element.classList.contains('image-reveal') 
+                    ? windowHeight * 0.7  // Images appear earlier
+                    : windowHeight * 0.85; // Text appears later
+                
+                if (elementTop < triggerPoint) {
+                    element.classList.add('active');
+                }
+            });
+        }
+
+        // Initial check and add scroll listener
+        window.addEventListener('scroll', revealOnScroll);
+        window.addEventListener('load', revealOnScroll);
+        
+        // Trigger initial animation after a short delay
+        setTimeout(revealOnScroll, 300);
+    </script>
+
+    <!-- Replace the Categories section with an AI Chat button section -->
+    <section style="
+        padding: 5rem 5%;
+        background-color: #f5f5f5;
+        text-align: center;
+    ">
+        <div class="scroll-reveal" style="max-width: 700px; margin: 0 auto;">
+            <h2 style="
+                font-size: 2.5rem;
+                margin-bottom: 1.5rem;
+                color: var(--gray-800);
+                line-height: 1.2;
+            ">Get Personalized Help</h2>
+            <p style="
+                font-size: 1.2rem;
+                color: var(--gray-600);
+                margin-bottom: 2rem;
+            ">Have questions or need guidance? Chat with our AI assistant for instant help with your learning journey.</p>
+            
+            <style>
+                @keyframes gradientAnimation {
+                    0% { background-position: 0% 50%; }
+                    50% { background-position: 100% 50%; }
+                    100% { background-position: 0% 50%; }
+                }
+                
+                .ai-chat-btn {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 0.8rem;
+                    padding: 1rem 2rem;
+                    font-size: 1.2rem;
+                    background: linear-gradient(90deg, #4285f4, #ea4335, #fbbc05, #34a853, #4285f4);
+                    background-size: 300% 300%;
+                    color: white;
+                    border-radius: 50px;
+                    text-decoration: none;
+                    box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+                    transition: transform 0.3s ease, box-shadow 0.3s ease;
+                    animation: gradientAnimation 6s ease infinite;
+                    position: relative;
+                    overflow: hidden;
+                }
+                
+                .ai-chat-btn:hover {
+                    transform: translateY(-3px);
+                    box-shadow: 0 8px 20px rgba(66, 133, 244, 0.4);
+                }
+                
+                .ai-chat-btn::after {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: -100%;
+                    width: 100%;
+                    height: 100%;
+                    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+                    transition: 0.5s;
+                }
+                
+                .ai-chat-btn:hover::after {
+                    left: 100%;
+                }
+            </style>
+            
+            <a href="ai-chat.html" class="ai-chat-btn">
+                <i class="fas fa-comment-dots"></i>
+                Chat with AI Assistant
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Simplexify</h3>
+                <p>Empowering learners worldwide with expert-led, accessible education for personal and professional growth.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Learn</h3>
+                <ul>
+                    <li><a href="#">Technology</a></li>
+                    <li><a href="#">Business</a></li>
+                    <li><a href="#">Design</a></li>
+                    <li><a href="#">Personal Development</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Success Stories</a></li>
+                    <li><a href="#">Teaching Center</a></li>
+                    <li><a href="#">Support</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Company</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Press</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2023 Simplexify. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Courses | LearnX</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-color: #2A5C82;
+            --secondary-color: #F0B429;
+            --light-bg: #f5f5f5;
+        }
+
+        .category-page {
+            padding: 2rem 5%;
+            margin-top: 80px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .course-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .course-card h3, .course-card p {
+            padding: 1rem;
+        }
+
+        .enroll-btn {
+            display: block;
+            width: 90%;
+            margin: 1rem auto;
+            padding: 0.8rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .enroll-btn:hover {
+            background: var(--secondary-color);
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 0.8rem 1.5rem;
+            background: var(--secondary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="category-page">
+        <h1>Design Courses</h1>
+        <div class="courses-grid">
+            <div class="course-card">
+                <a href="https://www.youtube.com/watch?v=_Hp_dI0DzY4" target="_blank" style="text-decoration: none; color: inherit;">
+                    <img src="https://img.freepik.com/free-vector/gradient-ui-ux-background_23-2149052117.jpg" alt="UI/UX Design">
+                    <h3>UI/UX Design Fundamentals</h3>
+                    <p>Master user interface design</p>
+                    <button class="enroll-btn">Watch Now</button>
+                </a>
+            </div>
+            <div class="course-card">
+                <a href="https://www.youtube.com/watch?v=WONZVnlam6U" target="_blank" style="text-decoration: none; color: inherit;">
+                    <img src="https://img.freepik.com/free-vector/gradient-colorful-abstract-background_52683-42528.jpg" alt="Graphic Design">
+                    <h3>Graphic Design Essentials</h3>
+                    <p>Complete design principles</p>
+                    <button class="enroll-btn">Watch Now</button>
+                </a>
+            </div>
+            <div class="course-card">
+                <a href="https://www.youtube.com/watch?v=Ey_EyJxGPqo" target="_blank" style="text-decoration: none; color: inherit;">
+                    <img src="https://img.freepik.com/free-vector/motion-graphic-designer-concept-illustration_114360-4827.jpg" alt="Motion Graphics">
+                    <h3>Motion Graphics Design</h3>
+                    <p>Create amazing animations</p>
+                    <button class="enroll-btn">Watch Now</button>
+                </a>
+            </div>
+            <div class="course-card">
+                <a href="https://www.youtube.com/watch?v=pywbPQD9vYU" target="_blank" style="text-decoration: none; color: inherit;">
+                    <img src="https://img.freepik.com/free-vector/graphic-design-geometric-wallpaper_23-2148811459.jpg" alt="Photoshop">
+                    <h3>Adobe Photoshop</h3>
+                    <p>Master photo editing</p>
+                    <button class="enroll-btn">Watch Now</button>
+                </a>
+            </div>
+            <div class="course-card">
+                <a href="https://www.youtube.com/watch?v=IBouhf4seWQ" target="_blank" style="text-decoration: none; color: inherit;">
+                    <img src="https://img.freepik.com/free-vector/illustration-graphic-design-concept_53876-5911.jpg" alt="Illustrator">
+                    <h3>Adobe Illustrator</h3>
+                    <p>Vector graphics mastery</p>
+                    <button class="enroll-btn">Watch Now</button>
+                </a>
+            </div>
+            <div class="course-card">
+                <a href="https://www.youtube.com/watch?v=aqHhpahguVY" target="_blank" style="text-decoration: none; color: inherit;">
+                    <img src="https://img.freepik.com/free-vector/gradient-ui-ux-background_23-2149065782.jpg" alt="Figma">
+                    <h3>Figma Design Tool</h3>
+                    <p>Modern UI/UX with Figma</p>
+                    <button class="enroll-btn">Watch Now</button>
+                </a>
+            </div>
+            <div class="course-card">
+                <a href="https://www.youtube.com/watch?v=zJ8xIfccM9s" target="_blank" style="text-decoration: none; color: inherit;">
+                    <img src="https://img.freepik.com/free-vector/colorful-web-design-concept_23-2147855771.jpg" alt="Web Design">
+                    <h3>Web Design Mastery</h3>
+                    <p>Create stunning websites</p>
+                    <button class="enroll-btn">Watch Now</button>
+                </a>
+            </div>
+            <div class="course-card">
+                <a href="https://www.youtube.com/watch?v=dFSia1LZI4Y" target="_blank" style="text-decoration: none; color: inherit;">
+                    <img src="https://img.freepik.com/free-vector/3d-modeling-concept-illustration_114360-8422.jpg" alt="3D Design">
+                    <h3>3D Design Basics</h3>
+                    <p>Learn 3D modeling</p>
+                    <button class="enroll-btn">Watch Now</button>
+                </a>
+            </div>
+            <div class="course-card">
+                <a href="https://www.youtube.com/watch?v=_2LLXnUdUIc" target="_blank" style="text-decoration: none; color: inherit;">
+                    <img src="https://img.freepik.com/free-vector/motion-graphics-concept-illustration_114360-4896.jpg" alt="After Effects">
+                    <h3>After Effects Animation</h3>
+                    <p>Create motion graphics</p>
+                    <button class="enroll-btn">Watch Now</button>
+                </a>
+            </div>
+            <div class="course-card">
+                <a href="https://www.youtube.com/watch?v=tRZGeaHPoaw" target="_blank" style="text-decoration: none; color: inherit;">
+                    <img src="https://img.freepik.com/free-vector/typography-concept-illustration_114360-4976.jpg" alt="Typography">
+                    <h3>Typography Design</h3>
+                    <p>Master text design</p>
+                    <button class="enroll-btn">Watch Now</button>
+                </a>
+            </div>
+        </div>
+        <a href="welcome2.html" class="back-btn">Back to Categories</a>
+    </div>
+</body>
+</html>

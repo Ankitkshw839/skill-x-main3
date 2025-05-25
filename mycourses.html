@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Courses | Simplexify</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .page-header {
+            margin-top: 80px;
+            padding: 3rem 5%;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 600px;
+        }
+
+        .courses-container {
+            padding: 3rem 5%;
+            background-color: var(--gray-100);
+            min-height: 70vh;
+        }
+
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-dropdown {
+            padding: 0.6rem 1.2rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius);
+            background: white;
+            min-width: 150px;
+            cursor: pointer;
+        }
+
+        .search-bar {
+            flex: 1;
+            min-width: 250px;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 0.6rem 1rem 0.6rem 3rem;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius);
+            background: white;
+        }
+
+        .search-bar i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-500);
+        }
+
+        .course-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 1rem 0;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid var(--gray-200);
+        }
+
+        @media (min-width: 768px) {
+            .course-card {
+                flex-direction: row;
+                align-items: stretch;
+            }
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .course-image {
+            overflow: hidden;
+            width: 100%;
+            height: 200px;
+        }
+
+        @media (min-width: 768px) {
+            .course-image {
+                width: 250px;
+                height: auto;
+            }
+        }
+
+        .course-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .course-card:hover .course-image img {
+            transform: scale(1.05);
+        }
+
+        .course-details {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .course-details h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--gray-800);
+        }
+
+        .course-details p {
+            color: var(--gray-600);
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-container {
+            margin-bottom: 1.5rem;
+            margin-top: auto;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--gray-600);
+        }
+
+        .course-meta {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            color: var(--gray-600);
+            font-size: 0.875rem;
+        }
+
+        .course-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .continue-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--radius);
+            background: var(--primary-color);
+            color: white;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            align-self: flex-start;
+        }
+
+        .continue-btn:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .empty-courses {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+        }
+
+        .empty-courses i {
+            font-size: 3rem;
+            color: var(--gray-400);
+            margin-bottom: 1rem;
+        }
+
+        .empty-courses h2 {
+            font-size: 1.5rem;
+            color: var(--gray-700);
+            margin-bottom: 1rem;
+        }
+
+        .empty-courses p {
+            color: var(--gray-600);
+            margin-bottom: 1.5rem;
+        }
+
+        .section-heading {
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .badge {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius);
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .loading-content {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #4285f4;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        .course-topics {
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .course-topics h4 {
+            margin: 0 0 0.5rem 0;
+            color: #202124;
+            font-size: 0.9rem;
+        }
+
+        .course-topics p {
+            margin: 0;
+            color: #5f6368;
+            font-size: 0.85rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .browse-section {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            margin-bottom: 2rem;
+        }
+
+        .browse-btn {
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .browse-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .browse-description {
+            margin-top: 1rem;
+            color: var(--gray-600);
+            font-size: 0.9rem;
+        }
+
+        .course-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 1rem 0;
+        }
+
+        .course-card {
+            flex-direction: column;
+        }
+
+        .course-image {
+            width: 100%;
+            height: 200px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="welcome2.html" class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            Simplexify
+        </a>
+        <nav>
+            <a href="welcome2.html"><i class="fas fa-home"></i> Home</a>
+            <a href="mycourses.html" class="active"><i class="fas fa-book-open"></i> My Courses</a>
+            <a href="dashboard.html"><i class="fas fa-chart-bar"></i> Dashboard</a>
+            <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+        </nav>
+    </header>
+
+    <div class="page-header">
+        <h1>My Learning Journey</h1>
+        <p>Track your progress and continue your education with our curated courses</p>
+    </div>
+
+    <div class="courses-container">
+        <div class="filter-bar">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search your courses...">
+            </div>
+            <select class="filter-dropdown">
+                <option>All Courses</option>
+                <option>In Progress</option>
+                <option>Completed</option>
+                <option>Not Started</option>
+            </select>
+            <select class="filter-dropdown">
+                <option>Sort By: Recent</option>
+                <option>Sort By: Progress</option>
+                <option>Sort By: Title</option>
+            </select>
+        </div>
+
+        <div class="browse-section">
+            <button class="browse-btn">
+                <i class="fas fa-compass"></i> Browse AI-Recommended Courses
+            </button>
+            <p class="browse-description">Get personalized course recommendations based on your interests and experience level</p>
+        </div>
+
+        <div id="courseList" class="course-list">
+            <!-- Courses will be dynamically added here -->
+        </div>
+    </div>
+
+    <script>
+        // Add this script to enhance UI interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add active class to current page in navigation
+            const currentLocation = window.location.pathname;
+            const navLinks = document.querySelectorAll('nav a');
+            
+            navLinks.forEach(link => {
+                if(link.getAttribute('href') === currentLocation.split('/').pop()) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+
+    <script type="module">
+        import { auth, handleLogout } from './auth.js';
+        import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-database.js";
+        import { generateCourseRecommendations, saveCourseRecommendations } from './courseRecommender.js';
+        
+        const database = getDatabase();
+        let currentUserData = null;
+
+        // Add logout button to the nav
+        const nav = document.querySelector('nav');
+        const logoutBtn = document.createElement('a');
+        logoutBtn.href = '#';
+        logoutBtn.id = 'logoutBtn';
+        logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
+        logoutBtn.addEventListener('click', handleLogout);
+        nav.appendChild(logoutBtn);
+
+        // Add click handler to browse button
+        document.querySelector('.browse-btn').addEventListener('click', async () => {
+            try {
+                console.log("Browse courses clicked");
+                const loadingDiv = document.createElement('div');
+                loadingDiv.className = 'loading-overlay';
+                loadingDiv.innerHTML = `
+                    <div class="loading-content">
+                        <div class="spinner"></div>
+                        <p>Generating personalized course recommendations...</p>
+                    </div>
+                `;
+                document.body.appendChild(loadingDiv);
+
+                // Get user data if not already loaded
+                if (!currentUserData) {
+                    try {
+                    currentUserData = await loadUserData(auth.currentUser.uid);
+                    } catch (error) {
+                        console.error("Error loading user data:", error);
+                        // If we can't load user data, use some defaults
+                        currentUserData = {
+                            mainInterest: 'programming',
+                            specificInterests: ['web development'],
+                            experienceLevel: 'Beginner'
+                        };
+                    }
+                }
+
+                console.log("Current user data:", currentUserData);
+
+                // Prepare user preferences for AI
+                const userPreferences = {
+                    mainInterest: currentUserData.mainInterest || 'programming',
+                    specificInterests: currentUserData.specificInterests || [],
+                    experienceLevel: currentUserData.experienceLevel || 'Beginner'
+                };
+
+                console.log("Sending preferences to AI:", userPreferences);
+
+                try {
+                // Get course recommendations
+                const recommendations = await generateCourseRecommendations(userPreferences);
+                
+                console.log("Received recommendations:", recommendations);
+
+                    if (Array.isArray(recommendations) && recommendations.length > 0) {
+                // Save recommendations to Firebase
+                await saveCourseRecommendations(auth.currentUser.uid, recommendations);
+                
+                // Display recommendations
+                displayCourses(recommendations);
+                    } else {
+                        throw new Error("Invalid recommendations format received");
+                    }
+                } catch (error) {
+                    console.error("API error:", error);
+                    alert(`Error from AI service: ${error.message}. Please try again later.`);
+                }
+                
+                // Remove loading overlay
+                document.body.removeChild(loadingDiv);
+                
+            } catch (error) {
+                console.error("Error in course recommendation process:", error);
+                alert('Error generating course recommendations. Please try again later.');
+                // Remove loading overlay in case of error
+                const loadingDiv = document.querySelector('.loading-overlay');
+                if (loadingDiv) {
+                    document.body.removeChild(loadingDiv);
+                }
+            }
+        });
+
+        async function loadUserData(userId) {
+            const userRef = ref(database, 'users/' + userId);
+            return new Promise((resolve, reject) => {
+                onValue(userRef, (snapshot) => {
+                    const data = snapshot.val();
+                    if (data) {
+                        currentUserData = data;
+                        resolve(data);
+                    } else {
+                        reject(new Error('No user data found'));
+                    }
+                }, (error) => {
+                    reject(error);
+                });
+            });
+        }
+
+        async function enrollInCourse(course) {
+            // Check if user is logged in
+            if (!auth.currentUser) {
+                throw new Error("You must be logged in to enroll in a course");
+            }
+            
+            const userId = auth.currentUser.uid;
+            const database = getDatabase();
+            
+            // Get current date
+            const enrollmentDate = new Date().toISOString();
+            
+            // Add progress tracking data to the course
+            const enrolledCourse = {
+                ...course,
+                enrollmentDate: enrollmentDate,
+                progress: 0,
+                lastAccessed: enrollmentDate,
+                status: 'in-progress',
+                completedLessons: [],
+                notes: []
+            };
+            
+            try {
+                // First get the existing enrolledCourses
+                const userEnrolledCoursesRef = ref(database, `users/${userId}/enrolledCourses`);
+                
+                return new Promise((resolve, reject) => {
+                    onValue(userEnrolledCoursesRef, async (snapshot) => {
+                        try {
+                            let enrolledCourses = snapshot.exists() ? snapshot.val() : [];
+                            
+                            // Make sure enrolledCourses is an array
+                            if (!Array.isArray(enrolledCourses)) {
+                                enrolledCourses = [];
+                            }
+                            
+                            // Check if course is already enrolled
+                            const alreadyEnrolled = enrolledCourses.some(c => c.title === course.title);
+                            
+                            if (alreadyEnrolled) {
+                                throw new Error(`You are already enrolled in "${course.title}"`);
+                            }
+                            
+                            // Add the new course to the array
+                            enrolledCourses.push(enrolledCourse);
+                            
+                            // Save back to Firebase
+                            await set(userEnrolledCoursesRef, enrolledCourses);
+                            console.log(`Successfully enrolled in course: ${course.title}`);
+                            resolve();
+                        } catch (error) {
+                            console.error("Error in onValue callback:", error);
+                            reject(error);
+                        }
+                    }, {
+                        onlyOnce: true // Only read the data once
+                    });
+                });
+            } catch (error) {
+                console.error("Error in enrollInCourse:", error);
+                throw error;
+            }
+        }
+
+        function displayCourses(courses) {
+            const courseList = document.querySelector('#courseList');
+            courseList.innerHTML = ''; // Clear existing courses
+
+            if (!Array.isArray(courses)) {
+                console.error("Courses is not an array:", courses);
+                return;
+            }
+
+            if (courses.length === 0) {
+                courseList.innerHTML = `
+                    <div class="empty-courses">
+                        <i class="fas fa-books"></i>
+                        <h2>No courses found</h2>
+                        <p>We couldn't find any courses matching your criteria.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            courses.forEach((course, index) => {
+                const courseCard = document.createElement('div');
+                courseCard.className = 'course-card animate-fade-in';
+                courseCard.innerHTML = `
+                    <div class="course-image">
+                        <img src="${course.imageUrl}" alt="${course.title}" onerror="this.src='https://img.freepik.com/free-vector/online-tutorials-concept_23-2148529858.jpg'">
+                    </div>
+                    <div class="course-details">
+                        <h2>${course.title}</h2>
+                        <p>${course.description}</p>
+                        <div class="course-meta">
+                            <div class="course-meta-item">
+                                <i class="fas fa-clock"></i> ${course.duration} weeks
+                            </div>
+                            <div class="course-meta-item">
+                                <i class="fas fa-signal"></i> ${course.difficulty}
+                            </div>
+                        </div>
+                        <div class="course-topics">
+                            <h4>Key Topics:</h4>
+                            <p>${Array.isArray(course.keyTopics) ? course.keyTopics.join(', ') : course.keyTopics}</p>
+                        </div>
+                        <div class="progress-container">
+                            <div class="progress-info">
+                                <span>Your progress</span>
+                                <span>0%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <button class="continue-btn start-learning-btn" data-course-index="${index}">
+                            <i class="fas fa-play-circle"></i> Start Learning
+                        </button>
+                    </div>
+                `;
+                courseList.appendChild(courseCard);
+            });
+
+            // Add event listeners to all "Start Learning" buttons
+            document.querySelectorAll('.start-learning-btn').forEach(button => {
+                button.addEventListener('click', async (event) => {
+                    const courseIndex = event.currentTarget.dataset.courseIndex;
+                    const course = courses[courseIndex];
+                    
+                    try {
+                        // Create a loading indicator
+                        const loadingDiv = document.createElement('div');
+                        loadingDiv.className = 'loading-overlay';
+                        loadingDiv.innerHTML = `
+                            <div class="loading-content">
+                                <div class="spinner"></div>
+                                <p>Enrolling in course...</p>
+                            </div>
+                        `;
+                        document.body.appendChild(loadingDiv);
+
+                        console.log("Starting course:", course.title);
+                        
+                        // Add the course to user's enrolled courses in Firebase
+                        await enrollInCourse(course);
+                        
+                        // Remove loading overlay
+                        document.body.removeChild(loadingDiv);
+                        
+                        // Show success message and ask if user wants to go to dashboard
+                        if (confirm(`Successfully enrolled in "${course.title}"! Would you like to view your enrolled courses in the Dashboard?`)) {
+                            window.location.href = 'dashboard.html';
+                        }
+                    } catch (error) {
+                        console.error("Error enrolling in course:", error);
+                        alert("Failed to enroll in course. Please try again.");
+                        
+                        // Remove loading overlay in case of error
+                        const loadingDiv = document.querySelector('.loading-overlay');
+                        if (loadingDiv) {
+                            document.body.removeChild(loadingDiv);
+                        }
+                    }
+                });
+            });
+        }
+
+        // Initialize the page
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                try {
+                    // Load user data
+                    currentUserData = await loadUserData(user.uid);
+                    
+                    // Check if there are already recommended courses
+                    if (currentUserData.recommendedCourses && Array.isArray(currentUserData.recommendedCourses) && currentUserData.recommendedCourses.length > 0) {
+                        displayCourses(currentUserData.recommendedCourses);
+                    }
+                } catch (error) {
+                    console.error("Error loading user data:", error);
+                    console.log("Will generate recommendations when user clicks the browse button");
+                }
+            } else {
+                // Handle not logged in state if needed
+                console.log("User not logged in");
+            }
+        });
+    </script>
+</body>
+</html>

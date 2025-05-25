@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technology Courses | LearnX</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-color: #2A5C82;
+            --secondary-color: #F0B429;
+            --light-bg: #f5f5f5;
+        }
+
+        .category-page {
+            padding: 2rem 5%;
+            margin-top: 80px;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .course-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .course-card h3, .course-card p {
+            padding: 1rem;
+        }
+
+        .enroll-btn {
+            display: block;
+            width: 90%;
+            margin: 1rem auto;
+            padding: 0.8rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .enroll-btn:hover {
+            background: var(--secondary-color);
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 0.8rem 1.5rem;
+            background: var(--secondary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: var(--primary-color);
+        }
+
+        @media (max-width: 768px) {
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="category-page">
+        <h1>Technology Courses</h1>
+        <div class="courses-grid">
+            <div class="course-card">
+                <a href="https://www.youtube.com/watch?v=G3e-cpL7ofc" target="_blank" style="text-decoration: none; color: inherit;">
+                    <img src="https://img.freepik.com/free-photo/html-system-website-concept_23-2150376770.jpg" alt="Web Development">
+                    <h3>HTML & CSS Full Course</h3>
+                    <p>Complete web development fundamentals</p>
+                    <button class="enroll-btn">Watch Now</button>
+                </a>
+            </div>
+            <div class="course-card">
+                <a href="https://www.youtube.com/watch?v=PkZNo7MFNFg" target="_blank" style="text-decoration: none; color: inherit;">
+                    <img src="https://img.freepik.com/free-vector/javascript-abstract-concept-illustration_335657-3702.jpg" alt="JavaScript">
+                    <h3>JavaScript Essentials</h3>
+                    <p>Master modern JavaScript programming</p>
+                    <button class="enroll-btn">Watch Now</button>
+                </a>
+            </div>
+            <div class="course-card">
+                <a href="https://www.youtube.com/watch?v=_uQrJ0TkZlc" target="_blank" style="text-decoration: none; color: inherit;">
+                    <img src="https://img.freepik.com/free-photo/computer-program-coding-screen_53876-138060.jpg?semt=ais_hybrid&w=740" alt="Python">
+                    <h3>Python for Beginners</h3>
+                    <p>Complete Python programming course</p>
+                    <button class="enroll-btn">Watch Now</button>
+                </a>
+            </div>
+            <div class="course-card">
+                <a href="https://www.youtube.com/watch?v=Oe421EPjeBE" target="_blank" style="text-decoration: none; color: inherit;">
+                    <img src="https://img.freepik.com/free-photo/programming-background-with-person-working-with-codes-computer_23-2150010119.jpg?semt=ais_hybrid&w=740" alt="Node.js">
+                    <h3>Node.js Tutorial</h3>
+                    <p>Backend development with Node.js</p>
+                    <button class="enroll-btn">Watch Now</button>
+                </a>
+            </div>
+            <div class="course-card">
+                <a href="https://www.youtube.com/watch?v=RLtyhwFtXQA" target="_blank" style="text-decoration: none; color: inherit;">
+                    <img src="https://img.freepik.com/free-vector/react-native-developers-desktop-mobile-app_701961-1876.jpg" alt="React">
+                    <h3>React.js Complete Guide</h3>
+                    <p>Modern frontend development</p>
+                    <button class="enroll-btn">Watch Now</button>
+                </a>
+            </div>
+            <div class="course-card">
+                <a href="https://www.youtube.com/watch?v=qz0aGYrrlhU" target="_blank" style="text-decoration: none; color: inherit;">
+                    <img src="https://img.freepik.com/free-photo/ai-chip-artificial-intelligence-future-technology-innovation_53876-129780.jpg?semt=ais_hybrid&w=740" alt="Machine Learning">
+                    <h3>Machine Learning Basics</h3>
+                    <p>Introduction to ML algorithms</p>
+                    <button class="enroll-btn">Watch Now</button>
+                </a>
+            </div>
+            <div class="course-card">
+                <a href="https://www.youtube.com/watch?v=HXV3zeQKqGY" target="_blank" style="text-decoration: none; color: inherit;">
+                    <img src="https://img.freepik.com/free-vector/gradient-sql-illustration_23-2149247491.jpg" alt="SQL">
+                    <h3>SQL Database Course</h3>
+                    <p>Complete database management</p>
+                    <button class="enroll-btn">Watch Now</button>
+                </a>
+            </div>
+            <div class="course-card">
+                <a href="https://www.youtube.com/watch?v=fis26HvvDII" target="_blank" style="text-decoration: none; color: inherit;">
+                    <img src="https://img.freepik.com/free-vector/app-development-illustration_52683-47931.jpg" alt="Android">
+                    <h3>Android Development</h3>
+                    <p>Build mobile apps with Android</p>
+                    <button class="enroll-btn">Watch Now</button>
+                </a>
+            </div>
+            <div class="course-card">
+                <a href="https://www.youtube.com/watch?v=WvhQhj4n6b8" target="_blank" style="text-decoration: none; color: inherit;">
+                    <img src="https://img.freepik.com/free-vector/cyber-security-concept_23-2148532223.jpg" alt="Cybersecurity">
+                    <h3>Cybersecurity Basics</h3>
+                    <p>Introduction to network security</p>
+                    <button class="enroll-btn">Watch Now</button>
+                </a>
+            </div>
+            <div class="course-card">
+                <a href="https://www.youtube.com/watch?v=Ct-lOOUqmyY" target="_blank" style="text-decoration: none; color: inherit;">
+                    <img src="https://img.freepik.com/free-vector/mobile-app-development-abstract-concept-illustration_335657-4876.jpg" alt="Flutter">
+                    <h3>Flutter Development</h3>
+                    <p>Cross-platform app development</p>
+                    <button class="enroll-btn">Watch Now</button>
+                </a>
+            </div>
+            <div class="course-card">
+                <a href="https://www.youtube.com/watch?v=7d2UMAIgOLQ" target="_blank" style="text-decoration: none; color: inherit;">
+                    <img src="https://img.freepik.com/free-vector/cloud-hosting-concept-illustration_114360-4135.jpg" alt="AWS">
+                    <h3>AWS Cloud Computing</h3>
+                    <p>Learn cloud infrastructure</p>
+                    <button class="enroll-btn">Watch Now</button>
+                </a>
+            </div>
+            <div class="course-card">
+                <a href="https://www.youtube.com/watch?v=IBYn7w7cUYg" target="_blank" style="text-decoration: none; color: inherit;">
+                    <img src="https://img.freepik.com/free-vector/container-ship-abstract-concept-illustration_335657-3897.jpg" alt="Docker">
+                    <h3>Docker & Kubernetes</h3>
+                    <p>Container orchestration basics</p>
+                    <button class="enroll-btn">Watch Now</button>
+                </a>
+            </div>
+        </div>
+        <a href="welcome2.html" class="back-btn">Back to Categories</a>
+    </div>
+</body>
+</html>

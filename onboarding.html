@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Your Interests | Simplexify</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Google Sans', 'Inter', sans-serif;
+            background: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #4285f4, #34a853, #fbbc05, #ea4335);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+        }
+
+        .onboarding-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            flex-grow: 1;
+            background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.95));
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        .step-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+            padding: 2.5rem;
+            margin-bottom: 1rem;
+            display: none;
+            border: 1px solid rgba(66, 133, 244, 0.1);
+        }
+
+        .step-container.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .step-header h2 {
+            font-size: 32px;
+            color: #202124;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .step-header p {
+            color: #5f6368;
+            font-size: 18px;
+            opacity: 0.9;
+        }
+
+        .interest-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .interest-card {
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            border: 2px solid #e8eaed;
+            border-radius: 16px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .interest-card:hover {
+            background: linear-gradient(135deg, #f8f9fa, #ffffff);
+            border-color: #4285f4;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(66, 133, 244, 0.15);
+        }
+
+        .interest-card.selected {
+            background: linear-gradient(135deg, #e8f0fe, #ffffff);
+            border-color: #4285f4;
+            box-shadow: 0 8px 24px rgba(66, 133, 244, 0.2);
+        }
+
+        .interest-card i {
+            font-size: 32px;
+            background: linear-gradient(135deg, #4285f4, #0d47a1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 12px;
+        }
+
+        .interest-card h3 {
+            margin: 0;
+            color: #202124;
+            font-size: 16px;
+        }
+
+        .experience-level {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .level-card {
+            flex: 1;
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            border: 2px solid #e8eaed;
+            border-radius: 16px;
+            padding: 1.5rem;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .level-card:hover {
+            background: linear-gradient(135deg, #f8f9fa, #ffffff);
+            border-color: #4285f4;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(66, 133, 244, 0.15);
+        }
+
+        .level-card.selected {
+            background: linear-gradient(135deg, #e8f0fe, #ffffff);
+            border-color: #4285f4;
+            box-shadow: 0 8px 24px rgba(66, 133, 244, 0.2);
+        }
+
+        .level-card i {
+            font-size: 32px;
+            background: linear-gradient(135deg, #4285f4, #0d47a1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 12px;
+        }
+
+        .level-card h3 {
+            margin: 0;
+            color: #202124;
+            font-size: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #202124;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            font-size: 16px;
+            color: #202124;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #4285f4;
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            font-size: 16px;
+            color: #202124;
+            transition: border-color 0.2s ease;
+            background-color: white;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1em;
+        }
+
+        .form-group select:focus {
+            outline: none;
+            border-color: #4285f4;
+        }
+
+        .form-group select:disabled {
+            background-color: #f8f9fa;
+            cursor: not-allowed;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .nav-btn {
+            padding: 12px 32px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .back-btn {
+            background: #f8f9fa;
+            color: #4285f4;
+            border: 2px solid #4285f4;
+        }
+
+        .back-btn:hover {
+            background: #4285f4;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .next-btn {
+            background: linear-gradient(135deg, #4285f4, #0d47a1);
+            color: white;
+            box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+        }
+
+        .next-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(66, 133, 244, 0.4);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #f1f3f4;
+            margin-bottom: 2rem;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, #4285f4, #0d47a1);
+            transition: width 0.5s ease;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .step-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #dadce0;
+            margin: 0 6px;
+            transition: all 0.3s ease;
+        }
+
+        .step-dot.active {
+            background: linear-gradient(135deg, #4285f4, #0d47a1);
+            transform: scale(1.2);
+        }
+
+        .subcategory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .subcategory-grid.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .subcategory-card {
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            border: 2px solid #e8eaed;
+            border-radius: 16px;
+            padding: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            display: none;
+        }
+
+        .subcategory-card.visible {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .subcategory-card:hover {
+            background: linear-gradient(135deg, #f8f9fa, #ffffff);
+            border-color: #4285f4;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(66, 133, 244, 0.15);
+        }
+
+        .subcategory-card.selected {
+            background: linear-gradient(135deg, #e8f0fe, #ffffff);
+            border-color: #4285f4;
+            box-shadow: 0 8px 24px rgba(66, 133, 244, 0.2);
+        }
+
+        .subcategory-card i {
+            font-size: 24px;
+            background: linear-gradient(135deg, #4285f4, #0d47a1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .subcategory-card h3 {
+            margin: 0;
+            color: #202124;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="welcome2.html" class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            Simplexify
+        </a>
+    </header>
+
+    <div class="onboarding-container">
+        <div class="progress-bar">
+            <div class="progress" style="width: 25%"></div>
+        </div>
+
+        <div class="step-indicator">
+            <div class="step-dot active"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+            <div class="step-dot"></div>
+        </div>
+
+        <!-- Step 1: Main Interests -->
+        <div class="step-container active" id="step1">
+            <div class="step-header">
+                <h2>What are you <span class="gradient-text">interested</span> in learning?</h2>
+                <p>Choose your main area of interest</p>
+            </div>
+            <div class="interest-grid">
+                <div class="interest-card" data-interest="programming">
+                    <i class="fas fa-code"></i>
+                    <h3>Programming</h3>
+                </div>
+                <div class="interest-card" data-interest="design">
+                    <i class="fas fa-palette"></i>
+                    <h3>Design</h3>
+                </div>
+                <div class="interest-card" data-interest="business">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Business</h3>
+                </div>
+                <div class="interest-card" data-interest="data-science">
+                    <i class="fas fa-database"></i>
+                    <h3>Data Science</h3>
+                </div>
+                <div class="interest-card" data-interest="marketing">
+                    <i class="fas fa-bullhorn"></i>
+                    <h3>Marketing</h3>
+                </div>
+                <div class="interest-card" data-interest="languages">
+                    <i class="fas fa-language"></i>
+                    <h3>Languages</h3>
+                </div>
+            </div>
+            <div class="navigation-buttons">
+                <button class="nav-btn back-btn" onclick="window.location.href='welcome2.html'">Back</button>
+                <button class="nav-btn next-btn" onclick="showSubcategories()">Next</button>
+            </div>
+        </div>
+
+        <!-- Step 1B: Sub-categories -->
+        <div class="step-container" id="step1b">
+            <div class="step-header">
+                <h2>Choose your <span class="gradient-text">specific</span> interests</h2>
+                <p>Select the areas you want to focus on</p>
+            </div>
+            <div class="subcategory-grid" id="subcategoryGrid">
+                <!-- Programming subcategories -->
+                <div class="subcategory-card" data-parent="programming" data-subcategory="web-development">
+                    <i class="fas fa-globe"></i>
+                    <h3>Web Development</h3>
+                </div>
+                <div class="subcategory-card" data-parent="programming" data-subcategory="mobile-development">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h3>Mobile Development</h3>
+                </div>
+                <div class="subcategory-card" data-parent="programming" data-subcategory="game-development">
+                    <i class="fas fa-gamepad"></i>
+                    <h3>Game Development</h3>
+                </div>
+                <div class="subcategory-card" data-parent="programming" data-subcategory="backend">
+                    <i class="fas fa-server"></i>
+                    <h3>Backend Development</h3>
+                </div>
+                <div class="subcategory-card" data-parent="programming" data-subcategory="devops">
+                    <i class="fas fa-network-wired"></i>
+                    <h3>DevOps</h3>
+                </div>
+
+                <!-- Design subcategories -->
+                <div class="subcategory-card" data-parent="design" data-subcategory="ui-design">
+                    <i class="fas fa-desktop"></i>
+                    <h3>UI Design</h3>
+                </div>
+                <div class="subcategory-card" data-parent="design" data-subcategory="graphic-design">
+                    <i class="fas fa-pencil-ruler"></i>
+                    <h3>Graphic Design</h3>
+                </div>
+                <div class="subcategory-card" data-parent="design" data-subcategory="motion-design">
+                    <i class="fas fa-film"></i>
+                    <h3>Motion Design</h3>
+                </div>
+
+                <!-- Business subcategories -->
+                <div class="subcategory-card" data-parent="business" data-subcategory="entrepreneurship">
+                    <i class="fas fa-lightbulb"></i>
+                    <h3>Entrepreneurship</h3>
+                </div>
+                <div class="subcategory-card" data-parent="business" data-subcategory="finance">
+                    <i class="fas fa-coins"></i>
+                    <h3>Finance</h3>
+                </div>
+                <div class="subcategory-card" data-parent="business" data-subcategory="management">
+                    <i class="fas fa-tasks"></i>
+                    <h3>Management</h3>
+                </div>
+
+                <!-- Data Science subcategories -->
+                <div class="subcategory-card" data-parent="data-science" data-subcategory="machine-learning">
+                    <i class="fas fa-brain"></i>
+                    <h3>Machine Learning</h3>
+                </div>
+                <div class="subcategory-card" data-parent="data-science" data-subcategory="data-analysis">
+                    <i class="fas fa-chart-bar"></i>
+                    <h3>Data Analysis</h3>
+                </div>
+                <div class="subcategory-card" data-parent="data-science" data-subcategory="big-data">
+                    <i class="fas fa-database"></i>
+                    <h3>Big Data</h3>
+                </div>
+
+                <!-- Marketing subcategories -->
+                <div class="subcategory-card" data-parent="marketing" data-subcategory="digital-marketing">
+                    <i class="fas fa-ad"></i>
+                    <h3>Digital Marketing</h3>
+                </div>
+                <div class="subcategory-card" data-parent="marketing" data-subcategory="content-marketing">
+                    <i class="fas fa-pen-fancy"></i>
+                    <h3>Content Marketing</h3>
+                </div>
+                <div class="subcategory-card" data-parent="marketing" data-subcategory="social-media">
+                    <i class="fas fa-hashtag"></i>
+                    <h3>Social Media</h3>
+                </div>
+
+                <!-- Languages subcategories -->
+                <div class="subcategory-card" data-parent="languages" data-subcategory="english">
+                    <i class="fas fa-a"></i>
+                    <h3>English</h3>
+                </div>
+                <div class="subcategory-card" data-parent="languages" data-subcategory="spanish">
+                    <i class="fas fa-e"></i>
+                    <h3>Spanish</h3>
+                </div>
+                <div class="subcategory-card" data-parent="languages" data-subcategory="mandarin">
+                    <i class="fas fa-language"></i>
+                    <h3>Mandarin</h3>
+                </div>
+            </div>
+            <div class="navigation-buttons">
+                <button class="nav-btn back-btn" onclick="prevStep(1)">Back</button>
+                <button class="nav-btn next-btn" onclick="nextStep(1)">Next</button>
+            </div>
+        </div>
+
+        <!-- Step 2: Experience Level -->
+        <div class="step-container" id="step2">
+            <div class="step-header">
+                <h2>What's your <span class="gradient-text">experience</span> level?</h2>
+                <p>Help us personalize your learning journey</p>
+            </div>
+            <div class="experience-level">
+                <div class="level-card" data-level="beginner">
+                    <i class="fas fa-seedling"></i>
+                    <h3>Beginner</h3>
+                    <p>Just starting out</p>
+                </div>
+                <div class="level-card" data-level="intermediate">
+                    <i class="fas fa-book-reader"></i>
+                    <h3>Intermediate</h3>
+                    <p>Some experience</p>
+                </div>
+                <div class="level-card" data-level="advanced">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h3>Advanced</h3>
+                    <p>Experienced learner</p>
+                </div>
+            </div>
+            <div class="navigation-buttons">
+                <button class="nav-btn back-btn" onclick="prevStep(2)">Back</button>
+                <button class="nav-btn next-btn" onclick="nextStep(2)">Next</button>
+            </div>
+        </div>
+
+        <!-- Step 3: Location -->
+        <div class="step-container" id="step3">
+            <div class="step-header">
+                <h2>Where are you <span class="gradient-text">located</span>?</h2>
+                <p>We'll show you relevant courses and opportunities</p>
+            </div>
+            <div class="form-group">
+                <label for="country">Country</label>
+                <select id="country" onchange="updateCities()">
+                    <option value="">Select your country</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="city">City</label>
+                <select id="city" disabled>
+                    <option value="">Select your city</option>
+                </select>
+            </div>
+            <div class="navigation-buttons">
+                <button class="nav-btn back-btn" onclick="prevStep(3)">Back</button>
+                <button class="nav-btn next-btn" onclick="nextStep(3)">Next</button>
+            </div>
+        </div>
+
+        <!-- Step 4: Personal Info -->
+        <div class="step-container" id="step4">
+            <div class="step-header">
+                <h2>Tell us about <span class="gradient-text">yourself</span></h2>
+                <p>Help us personalize your experience</p>
+            </div>
+            <div class="form-group">
+                <label for="dob">Date of Birth</label>
+                <input type="date" id="dob">
+            </div>
+            <div class="form-group">
+                <label for="occupation">Current Occupation</label>
+                <input type="text" id="occupation" placeholder="Student, Professional, etc.">
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" placeholder="Enter your 10-digit phone number" maxlength="10" pattern="[0-9]{10}">
+                <div id="phone-error" style="color: #ea4335; font-size: 0.875rem; margin-top: 0.5rem; display: none;">Please enter a valid 10-digit phone number</div>
+            </div>
+            <div class="navigation-buttons">
+                <button class="nav-btn back-btn" onclick="prevStep(4)">Back</button>
+                <button class="nav-btn next-btn" onclick="submitForm()">Finish</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-database.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-analytics.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCGV8-zgiG0z04OTU-bK7fbOWPLT4X6TFY",
+            authDomain: "simplexify.firebaseapp.com",
+            databaseURL: "https://simplexify-default-rtdb.firebaseio.com",
+            projectId: "simplexify",
+            storageBucket: "simplexify.firebasestorage.app",
+            messagingSenderId: "809236435012",
+            appId: "1:809236435012:web:18ade7317dda448c716c11",
+            measurementId: "G-H8667PT04T"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const auth = getAuth(app);
+        const database = getDatabase(app);
+
+        // Check authentication state
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.replace('login.html');
+            }
+        });
+
+        // Update the submitForm function to use Realtime Database
+        window.submitForm = async function() {
+            const user = auth.currentUser;
+            if (!user) {
+                alert('Please login first');
+                window.location.replace('login.html');
+                return;
+            }
+
+            // Validate phone number
+            const phoneNumber = document.getElementById('phone').value;
+            const phoneError = document.getElementById('phone-error');
+            
+            if (!/^\d{10}$/.test(phoneNumber)) {
+                phoneError.style.display = 'block';
+                return;
+            } else {
+                phoneError.style.display = 'none';
+            }
+
+            try {
+                const userData = {
+                    mainInterest: document.querySelector('.interest-card.selected')?.dataset.interest || '',
+                    specificInterests: getSelectedSubcategories(),
+                    experienceLevel: getSelectedLevel() || '',
+                    location: {
+                        country: document.getElementById('country').value,
+                        city: document.getElementById('city').value
+                    },
+                    personalInfo: {
+                        dob: document.getElementById('dob').value,
+                        occupation: document.getElementById('occupation').value,
+                        phone: phoneNumber
+                    },
+                    timestamp: new Date().toISOString(),
+                    userId: user.uid,
+                    email: user.email
+                };
+
+                // Save to Realtime Database
+                await set(ref(database, 'users/' + user.uid), userData);
+                
+                // Show success message
+                alert('Your preferences have been saved successfully!');
+                
+                // Redirect to welcome page
+                window.location.href = 'welcome2.html';
+            } catch (error) {
+                console.error("Error saving user data:", error);
+                alert('Error saving your preferences. Please try again. Error: ' + error.message);
+            }
+        };
+
+        // Make functions available to the window object
+        window.showSubcategories = showSubcategories;
+        window.getSelectedSubcategories = getSelectedSubcategories;
+        window.getSelectedLevel = getSelectedLevel;
+        window.nextStep = nextStep;
+        window.prevStep = prevStep;
+        window.updateProgress = updateProgress;
+        window.goBackToMainInterests = goBackToMainInterests;
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCountries();
+            // Add any other initialization code here
+        });
+    </script>
+
+    <script>
+        // Handle interest card selection
+        document.querySelectorAll('.interest-card').forEach(card => {
+            card.addEventListener('click', () => {
+                // Remove selection from other cards
+                document.querySelectorAll('.interest-card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+            });
+        });
+
+        // Handle subcategory card selection
+        document.querySelectorAll('.subcategory-card').forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.toggle('selected');
+            });
+        });
+
+        function showSubcategories() {
+            const selectedInterest = document.querySelector('.interest-card.selected');
+            if (!selectedInterest) {
+                alert('Please select a main category first');
+                return;
+            }
+
+            const interest = selectedInterest.dataset.interest;
+            
+            // Hide step 1 and show step 1b
+            document.getElementById('step1').classList.remove('active');
+            document.getElementById('step1b').classList.add('active');
+
+            // Show relevant subcategories
+            const subcategoryGrid = document.getElementById('subcategoryGrid');
+            subcategoryGrid.classList.add('show');
+            
+            document.querySelectorAll('.subcategory-card').forEach(card => {
+                if (card.dataset.parent === interest) {
+                    card.classList.add('visible');
+                } else {
+                    card.classList.remove('visible');
+                    card.classList.remove('selected');
+                }
+            });
+
+            // Update progress
+            updateProgress(33);
+        }
+
+        function goBackToMainInterests() {
+            // Hide subcategories and show main interests
+            document.getElementById('step1b').classList.remove('active');
+            document.getElementById('step1').classList.add('active');
+            
+            // Reset subcategory selections
+            document.querySelectorAll('.subcategory-card').forEach(card => {
+                card.classList.remove('visible');
+                card.classList.remove('selected');
+            });
+            
+            // Update progress
+            updateProgress(25);
+        }
+
+        function getSelectedSubcategories() {
+            return Array.from(document.querySelectorAll('.subcategory-card.selected'))
+                .map(card => card.dataset.subcategory);
+        }
+
+        // Handle experience level selection
+        document.querySelectorAll('.level-card').forEach(card => {
+            card.addEventListener('click', () => {
+                document.querySelectorAll('.level-card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+            });
+        });
+
+        function getSelectedLevel() {
+            const selectedCard = document.querySelector('.level-card.selected');
+            return selectedCard ? selectedCard.dataset.level : null;
+        }
+
+        function nextStep(currentStep) {
+            if (currentStep === 1) {
+                const selectedSubcategories = getSelectedSubcategories();
+                if (selectedSubcategories.length === 0) {
+                    alert('Please select at least one specific interest');
+                    return;
+                }
+                document.getElementById('step1b').classList.remove('active');
+            } else {
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+            }
+            document.getElementById(`step${currentStep + 1}`).classList.add('active');
+            updateProgress((currentStep + 1) * 25);
+        }
+
+        function prevStep(currentStep) {
+            if (currentStep === 1) {
+                goBackToMainInterests();
+                return;
+            }
+            
+            const currentElement = document.getElementById(`step${currentStep}`);
+            currentElement.classList.remove('active');
+            
+            if (currentStep === 2) {
+                document.getElementById('step1b').classList.add('active');
+            } else {
+                document.getElementById(`step${currentStep - 1}`).classList.add('active');
+            }
+            
+            updateProgress((currentStep - 1) * 25);
+        }
+
+        function updateProgress(percentage) {
+            document.querySelector('.progress').style.width = percentage + '%';
+        }
+
+        // Countries and Cities data
+        const countriesData = {
+            "United States": ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose"],
+            "United Kingdom": ["London", "Birmingham", "Leeds", "Glasgow", "Sheffield", "Manchester", "Edinburgh", "Liverpool", "Bristol", "Cardiff"],
+            "Canada": ["Toronto", "Montreal", "Vancouver", "Calgary", "Edmonton", "Ottawa", "Quebec City", "Winnipeg", "Hamilton", "Halifax"],
+            "Australia": ["Sydney", "Melbourne", "Brisbane", "Perth", "Adelaide", "Gold Coast", "Canberra", "Newcastle", "Wollongong", "Logan City"],
+            "India": ["Mumbai", "Delhi", "Bangalore", "Hyderabad", "Chennai", "Kolkata", "Pune", "Ahmedabad", "Surat", "Jaipur"],
+            "Germany": ["Berlin", "Hamburg", "Munich", "Cologne", "Frankfurt", "Stuttgart", "Düsseldorf", "Leipzig", "Dortmund", "Essen"],
+            "France": ["Paris", "Marseille", "Lyon", "Toulouse", "Nice", "Nantes", "Strasbourg", "Montpellier", "Bordeaux", "Lille"],
+            "Japan": ["Tokyo", "Yokohama", "Osaka", "Nagoya", "Sapporo", "Fukuoka", "Kobe", "Kyoto", "Kawasaki", "Saitama"],
+            "China": ["Shanghai", "Beijing", "Guangzhou", "Shenzhen", "Chengdu", "Xi'an", "Hangzhou", "Chongqing", "Nanjing", "Wuhan"],
+            "Brazil": ["São Paulo", "Rio de Janeiro", "Brasília", "Salvador", "Fortaleza", "Belo Horizonte", "Manaus", "Curitiba", "Recife", "Porto Alegre"]
+        };
+
+        // Initialize country dropdown
+        function initializeCountries() {
+            const countrySelect = document.getElementById('country');
+            Object.keys(countriesData).sort().forEach(country => {
+                const option = document.createElement('option');
+                option.value = country;
+                option.textContent = country;
+                countrySelect.appendChild(option);
+            });
+        }
+
+        // Update cities based on selected country
+        function updateCities() {
+            const countrySelect = document.getElementById('country');
+            const citySelect = document.getElementById('city');
+            const selectedCountry = countrySelect.value;
+
+            // Clear current cities
+            citySelect.innerHTML = '<option value="">Select your city</option>';
+            
+            if (selectedCountry) {
+                // Enable city select
+                citySelect.disabled = false;
+                
+                // Add cities for selected country
+                countriesData[selectedCountry].sort().forEach(city => {
+                    const option = document.createElement('option');
+                    option.value = city;
+                    option.textContent = city;
+                    citySelect.appendChild(option);
+                });
+            } else {
+                // Disable city select if no country selected
+                citySelect.disabled = true;
+            }
+        }
+    </script>
+</body>
+</html> 

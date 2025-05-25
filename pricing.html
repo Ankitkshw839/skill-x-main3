@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing | Simplexify</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #030014;
+            color: #fff;
+            min-height: 100vh;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        .pricing-header {
+            text-align: center;
+            padding: 8rem 2rem 4rem;
+            background: linear-gradient(to bottom, rgba(3, 0, 20, 0.8), rgba(3, 0, 20, 0.95));
+        }
+
+        .pricing-header h1 {
+            font-size: 7rem;
+            font-weight: 50;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s ease forwards;
+        }
+
+        .pricing-header p {
+            font-size: 1.8rem;
+            color: #ffffff82;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1s ease forwards 0.3s;
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .highlight {
+            background: linear-gradient(
+                270deg,
+                #4c35de,
+                #e64aa9,
+                #ff6b6b,
+                #4834d4,
+                #686de0,
+                #be2edd
+            );
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientFlow 8s ease infinite;
+            position: relative;
+            display: inline-block;
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .pricing-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin: 3rem 0;
+        }
+
+        .toggle-label {
+            color: #888;
+            font-size: 1.1rem;
+        }
+
+        .toggle-label.active {
+            color: #fff;
+        }
+
+        .pricing-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            padding: 2rem 5%;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            width: 320px;
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .pricing-card.popular {
+            background: rgba(76, 53, 222, 0.1);
+            border: 2px solid #4c35de;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: 12px;
+            right: -35px;
+            background: #4c35de;
+            color: white;
+            padding: 0.5rem 3rem;
+            transform: rotate(45deg);
+            font-size: 0.8rem;
+        }
+
+        .price-amount {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .price-period {
+            color: #888;
+            font-size: 1rem;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin: 2rem 0;
+            padding: 0;
+        }
+
+        .feature-list li {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #fff;
+        }
+
+        .feature-list i {
+            color: #4c35de;
+        }
+
+        .comparison-table {
+            max-width: 1000px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .comparison-table table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .comparison-table th {
+            background: rgba(76, 53, 222, 0.1);
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            color: #888;
+        }
+
+        .comparison-table i.fa-check {
+            color: #4c35de;
+        }
+
+        .comparison-table i.fa-minus {
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .pricing-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .pricing-card {
+                width: 100%;
+                max-width: 320px;
+            }
+
+            .comparison-table {
+                overflow-x: auto;
+            }
+        }
+
+        .faq-section {
+            max-width: 800px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+
+        .faq-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem 1.5rem;
+            color: #888;
+            display: none;
+        }
+
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="pricing-header">
+        <h1>Simple <span class="highlight">Pricing</span></h1>
+        <p>Choose the plan that best fits your <span class="highlight">learning journey</span>. No hidden fees, cancel anytime.</p>
+    </div>
+
+    <div class="pricing-container">
+        <!-- Free Plan -->
+        <div class="pricing-card">
+            <div style="margin-bottom: 1.5rem;">
+                <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Free</h3>
+                <p style="color: #888; font-size: 0.9rem;">Perfect for getting started</p>
+            </div>
+            <div style="margin-bottom: 2rem;">
+                <span class="price-amount">$0</span>
+                <span class="price-period">/month</span>
+            </div>
+            <ul class="feature-list">
+                <li><i class="fas fa-check"></i> Access to basic courses</li>
+                <li><i class="fas fa-check"></i> Community support</li>
+                <li><i class="fas fa-check"></i> Basic progress tracking</li>
+                <li><i class="fas fa-check"></i> Course previews</li>
+            </ul>
+            <a href="signup.html" class="btn btn-primary" style="width: 100%; text-align: center;">Get Started</a>
+        </div>
+
+        <!-- Pro Plan -->
+        <div class="pricing-card popular">
+            <div class="popular-badge">POPULAR</div>
+            <div style="margin-bottom: 1.5rem;">
+                <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Pro</h3>
+                <p style="color: #888; font-size: 0.9rem;">Best for serious learners</p>
+            </div>
+            <div style="margin-bottom: 2rem;">
+                <span class="price-amount">$15</span>
+                <span class="price-period">/month</span>
+            </div>
+            <ul class="feature-list">
+                <li><i class="fas fa-check"></i> All Free features, plus:</li>
+                <li><i class="fas fa-check"></i> Unlimited course access</li>
+                <li><i class="fas fa-check"></i> Certificate of completion</li>
+                <li><i class="fas fa-check"></i> Priority support</li>
+                <li><i class="fas fa-check"></i> Offline downloads</li>
+                <li><i class="fas fa-check"></i> Ad-free experience</li>
+            </ul>
+            <a href="signup.html" class="btn btn-primary" style="width: 100%; text-align: center; background: #4c35de; border: none;">Start Pro Trial</a>
+        </div>
+
+        <!-- Enterprise Plan -->
+        <div class="pricing-card">
+            <div style="margin-bottom: 1.5rem;">
+                <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Enterprise</h3>
+                <p style="color: #888; font-size: 0.9rem;">For teams & organizations</p>
+            </div>
+            <div style="margin-bottom: 2rem;">
+                <span class="price-amount">Custom</span>
+            </div>
+            <ul class="feature-list">
+                <li><i class="fas fa-check"></i> All Pro features, plus:</li>
+                <li><i class="fas fa-check"></i> Custom learning paths</li>
+                <li><i class="fas fa-check"></i> Dedicated success manager</li>
+                <li><i class="fas fa-check"></i> API access</li>
+                <li><i class="fas fa-check"></i> Custom reporting</li>
+                <li><i class="fas fa-check"></i> Team analytics</li>
+            </ul>
+            <a href="#" class="btn btn-primary" style="width: 100%; text-align: center;">Contact Sales</a>
+        </div>
+    </div>
+
+    <div class="comparison-table">
+        <table>
+            <thead>
+                <tr>
+                    <th>Features</th>
+                    <th>Free</th>
+                    <th>Pro</th>
+                    <th>Enterprise</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Basic Courses</td>
+                    <td><i class="fas fa-check"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                </tr>
+                <tr>
+                    <td>Community Access</td>
+                    <td><i class="fas fa-check"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                </tr>
+                <tr>
+                    <td>Progress Tracking</td>
+                    <td><i class="fas fa-minus"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                </tr>
+                <tr>
+                    <td>Certificates</td>
+                    <td><i class="fas fa-minus"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                </tr>
+                <tr>
+                    <td>Priority Support</td>
+                    <td><i class="fas fa-minus"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                </tr>
+                <tr>
+                    <td>API Access</td>
+                    <td><i class="fas fa-minus"></i></td>
+                    <td><i class="fas fa-minus"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                </tr>
+                <tr>
+                    <td>Custom Reporting</td>
+                    <td><i class="fas fa-minus"></i></td>
+                    <td><i class="fas fa-minus"></i></td>
+                    <td><i class="fas fa-check"></i></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="faq-section">
+        <h2 style="text-align: center; margin-bottom: 2rem;">Frequently Asked Questions</h2>
+        <div class="faq-item">
+            <div class="faq-question">
+                Can I switch plans later?
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                Yes, you can upgrade or downgrade your plan at any time. Changes will be reflected in your next billing cycle.
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">
+                What payment methods do you accept?
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                We accept all major credit cards, PayPal, and bank transfers for Enterprise plans.
+            </div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-question">
+                Is there a refund policy?
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                Yes, we offer a 30-day money-back guarantee if you're not satisfied with your Pro subscription.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // FAQ Toggle
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const faqItem = question.parentElement;
+                faqItem.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html> 
